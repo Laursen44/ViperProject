@@ -25,7 +25,7 @@ private ObjectHandler handler;
 			{
 				if(key == KeyEvent.VK_W) temp.setVec(temp.getVec().add(-10));
 				if(key == KeyEvent.VK_S) temp.setVec(temp.getVec().add(10));
-				if(key == KeyEvent.VK_A) temp.setVec(temp.getVec().rotate(-5));
+				if(key == KeyEvent.VK_A) temp.setVec(temp.getVec().normalize());
 				if(key == KeyEvent.VK_D) temp.setVec(temp.getVec().rotate(5));
 			}
 		}
