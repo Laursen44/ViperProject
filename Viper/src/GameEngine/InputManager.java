@@ -15,7 +15,9 @@ private ObjectHandler handler;
 
 	public void keyPressed(KeyEvent e)
 	{
+		Vector2D dirVec;
 		int key = e.getKeyCode();
+		
 		
 		for(int i = 0; i < handler.object.size(); i++)
 		{
@@ -23,10 +25,20 @@ private ObjectHandler handler;
 			
 			if(temp.getId() == ID.PLAYER)
 			{
-				if(key == KeyEvent.VK_W) temp.setVec(temp.getVec().add(-10));
-				if(key == KeyEvent.VK_S) temp.setVec(temp.getVec().add(10));
+				dirVec = new Vector2D(temp.vec.getX(), temp.vec.getY());
+						
+				if(key == KeyEvent.VK_W)
+				{
+					dirVec.rotate(temp.vec, 10f);
+				}
+				if(key == KeyEvent.VK_S)
+				{
+					temp.vec.mul(dirVec);
+					temp.vec.add(10f);
+				}
+				
 				if(key == KeyEvent.VK_A) temp.setVec(temp.getVec().normalize());
-				if(key == KeyEvent.VK_D) temp.setVec(temp.getVec().rotate(5));
+				//if(key == KeyEvent.VK_D) temp.setVec(temp.getVec().rotate(5));
 			}
 		}
 	}
