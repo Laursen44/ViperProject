@@ -28,13 +28,13 @@ public class Vector2D {
 		return this;
 	}
 	
-	public Vector2D rotate(float angle)
+	public Vector2D rotate(Vector2D vec, float angle)
 	{
 		float rad = (float)Math.toRadians(angle);
 		float cos = (float)Math.cos(rad);
 		float sin = (float)Math.sin(rad);
 		
-		return new Vector2D((float)(x * cos - y * sin),(float)(x * sin + y * cos));
+		return new Vector2D((float)(x * cos - y * sin),(float)(x * sin + y * cos)).mul(vec);
 	}
 	
 	public Vector2D add(Vector2D v)
