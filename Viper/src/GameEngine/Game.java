@@ -1,5 +1,5 @@
 package GameEngine;
-
+//thomas is a....
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.event.KeyListener;
@@ -31,6 +31,7 @@ public class Game extends Canvas implements Runnable
 		game = new Thread(this);
 		game.start();
 		running = true;
+		System.out.println("hej");
 	}
 
 	public synchronized void stop()
