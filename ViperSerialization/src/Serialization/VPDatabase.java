@@ -3,7 +3,9 @@ package Serialization;
 import static Serialization.SerializationUtil.*;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,21 +27,6 @@ public class VPDatabase extends VPBase
 	{
 		setName(name);
 		size += HEADER.length + 2 + 1 + 2;
-	}
-	
-	public void setName(String name)
-	{
-		if (this.name != null)
-			size -= this.name.length;
-		
-		nameLength = (short)name.length();
-		this.name = name.getBytes();
-		size += nameLength;
-	}
-	
-	public String getName() 
-	{
-		return new String(name, 0, nameLength);
 	}
 	
 	public void addObject(VPObject object) 
@@ -121,5 +108,18 @@ public class VPDatabase extends VPBase
 			e.printStackTrace();
 		}
 		return Deserialize(buffer);
+	}
+	
+	public void serializeToFile(String path)
+	{
+		byte[] data = new byte[getSize()];
+		getBytes(data, 0);
+		try {
+			BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(path));
+			stream.write(data);
+			stream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

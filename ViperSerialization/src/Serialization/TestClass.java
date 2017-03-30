@@ -1,8 +1,5 @@
 package Serialization;
 
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Random;
 
 public class TestClass 
@@ -27,21 +24,7 @@ public class TestClass
 		object.addField(field);
 		
 		database.addObject(object);
+		database.serializeToFile("test.vpdb");
 		
-		byte[] stream = new byte[database.getSize()];
-		database.getBytes(stream, 0);
-		saveToFile("test.vpdb", stream);
-		
-	}
-	
-	static void saveToFile(String path, byte[] data)
-	{
-		try {
-			BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(path));
-			stream.write(data);
-			stream.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 }
