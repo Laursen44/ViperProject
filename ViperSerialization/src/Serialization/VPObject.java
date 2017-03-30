@@ -76,6 +76,36 @@ public class VPObject extends VPBase
 		return pointer;
 	}
 	
+	public VPArray findArray(VPArray name)
+	{
+		for (VPArray array : arrays)
+		{
+			if (array.getName().equals(name))
+				return array;
+		}
+		return null;
+	}
+	
+	public VPString findString(String name)
+	{
+		for (VPString string : strings)
+		{
+			if (string.getName().equals(name))
+				return string;
+		}
+		return null;
+	}
+	
+	public VPField findField(String name)
+	{
+		for (VPField field : fields)
+		{
+			if (field.getName().equals(name))
+				return field;
+		}
+		return null;
+	}
+	
 	public static VPObject Deserialize(byte[] data, int pointer)
 	{
 		byte containerType = data[pointer++];

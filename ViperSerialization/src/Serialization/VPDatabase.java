@@ -96,6 +96,16 @@ public class VPDatabase extends VPBase
 		return result;
 	}
 	
+	public VPObject findObject(String name)
+	{
+		for (VPObject object : objects)
+		{
+			if (object.getName().equals(name))
+				return object;
+		}
+		return null;
+	}
+	
 	public static VPDatabase DeserializeFromFile(String path)
 	{
 		byte[] buffer = null;
