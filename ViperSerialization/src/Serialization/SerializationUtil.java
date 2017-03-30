@@ -2,7 +2,7 @@ package Serialization;
 
 import java.nio.ByteBuffer;
 
-public class SerializationWriter 
+public class SerializationUtil 
 {
 	public static final byte[] HEADER = "VP".getBytes();
 	public static final short VERSION = 0x0100;

@@ -1,35 +1,17 @@
 package Serialization;
 
-import static Serialization.SerializationWriter.*;
+import static Serialization.SerializationUtil.*;
 
 
-public class VPString 
+public class VPString extends VPBase
 {
 	public static final byte CONTAINER_TYPE = ContainerType.STRING;
-	public short nameLength;
-	public byte[] name;
-	public int size = 1 + 2 + 4 + 4;
 	public int count = 0;
 	public char[] characters;
 	
 	private VPString()
 	{
-		
-	}
-	
-	public void setName(String name)
-	{
-		if (this.name != null)
-			size -= this.name.length;
-		
-		nameLength = (short)name.length();
-		this.name = name.getBytes();
-		size += nameLength;
-	}
-	
-	public String getName() 
-	{
-		return new String(name, 0, nameLength);
+		size += 1 + 4;
 	}
 	
 	public String getString() 

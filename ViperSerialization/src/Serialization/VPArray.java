@@ -1,13 +1,10 @@
 package Serialization;
 
-import static Serialization.SerializationWriter.*;
+import static Serialization.SerializationUtil.*;
 
-public class VPArray 
+public class VPArray extends VPBase
 {
 	public static final byte CONTAINER_TYPE = ContainerType.ARRAY;
-	public short nameLength;
-	public byte[] name;
-	public int size = 1 + 2 + 4 + 1 + 4;
 	public byte type;
 	public int count;
 	public byte[] data;
@@ -22,22 +19,7 @@ public class VPArray
 	
 	private VPArray()
 	{
-		
-	}
-	
-	public void setName(String name)
-	{
-		if (this.name != null)
-			size -= this.name.length;
-		
-		nameLength = (short)name.length();
-		this.name = name.getBytes();
-		size += nameLength;
-	}
-	
-	public String getName() 
-	{
-		return new String(name, 0, nameLength);
+		size += 1 + 1 + 4;
 	}
 	
 	private void updateSize()

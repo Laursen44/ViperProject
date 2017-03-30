@@ -1,6 +1,6 @@
 package Serialization;
 
-import static Serialization.SerializationWriter.*;
+import static Serialization.SerializationUtil.*;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -8,13 +8,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VPDatabase 
+public class VPDatabase extends VPBase
 {
 	public static final byte[] HEADER = "VPDB".getBytes();
+	public static final short VERSION = 0x0100;
 	public static final byte CONTAINER_TYPE = ContainerType.DATABASE;
-	public short nameLength;
-	public byte[] name;
-	private int size = 4 + 1 + 2 + 4 + 2;
 	private short objectCount;
 	public List<VPObject> objects = new ArrayList<VPObject>();
 
@@ -26,6 +24,7 @@ public class VPDatabase
 	public VPDatabase(String name)
 	{
 		setName(name);
+		size += HEADER.length + 2 + 1 + 2;
 	}
 	
 	public void setName(String name)
@@ -59,6 +58,7 @@ public class VPDatabase
 	public int getBytes(byte[] dest, int pointer) 
 	{
 		pointer = writeBytes(dest, pointer, HEADER);
+		pointer = writeBytes(dest, pointer, VERSION);
 		pointer = writeBytes(dest, pointer, CONTAINER_TYPE);
 		pointer = writeBytes(dest, pointer, nameLength);
 		pointer = writeBytes(dest, pointer, name);
@@ -76,6 +76,13 @@ public class VPDatabase
 		int pointer = 0;
 		assert(readString(data, pointer, HEADER.length).equals(HEADER));
 		pointer += HEADER.length;
+		
+		if (readShort(data, pointer) != (VERSION))
+		{
+			System.out.println("Invalid version.");
+			return null;
+		}
+		pointer += 2;
 		
 		byte containerType = readByte(data, pointer++);
 		assert(containerType == CONTAINER_TYPE);

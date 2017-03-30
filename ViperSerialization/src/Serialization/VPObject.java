@@ -1,49 +1,30 @@
 package Serialization;
 
-import static Serialization.SerializationWriter.*;
+import static Serialization.SerializationUtil.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VPObject 
+public class VPObject extends VPBase
 {
 	public static final byte CONTAINER_TYPE = ContainerType.OBJECT;
-	public short nameLength;
-	public byte[] name;
-	private int size = 1 + 2 + 4 + 2 + 2 + 2;
 	private short fieldCount;
 	public List<VPField> fields = new ArrayList<VPField>();
 	private short stringCount;
 	public List<VPString> strings = new ArrayList<VPString>();
 	private short arrayCount;
-	public List<VPArray> arrays = new ArrayList<VPArray>();
-	
-	private static final int sizeOffset = 1 + 2 + 4;
+	public List<VPArray> arrays = new ArrayList<VPArray>(); 
 	
 	private VPObject()
 	{
-		
+
 	}
 	
 	public VPObject(String name)
 	{
+		size += 1 + 2 + 2 + 2;
 		setName(name);
 	}
 	
-	public void setName(String name)
-	{
-		if (this.name != null)
-			size -= this.name.length;
-		
-		nameLength = (short)name.length();
-		this.name = name.getBytes();
-		size += nameLength;
-	}
-	
-	public String getName() 
-	{
-		return new String(name, 0, nameLength);
-	}
-
 	public void addField(VPField field) 
 	{
 		fields.add(field);
@@ -108,8 +89,6 @@ public class VPObject
 		
 		result.size = readInt(data, pointer);
 		pointer += 4;
-		
-		// if we want to exit early: pointer += result.size + sizeOffset - result.nameLength;
 		
 		result.fieldCount = readShort(data, pointer);
 		pointer += 2;

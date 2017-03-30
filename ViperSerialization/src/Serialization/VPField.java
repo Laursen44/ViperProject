@@ -1,29 +1,16 @@
 package Serialization;
  
-import static Serialization.SerializationWriter.*;
+import static Serialization.SerializationUtil.*;
 
-public class VPField 
+public class VPField extends VPBase
 {
 	public static final byte CONTAINER_TYPE = ContainerType.FIELD;
-	public short nameLength;
-	public byte[] name;
 	public byte type;
 	public byte[] data;
 	
 	private VPField()
 	{
 		
-	}
-	
-	public void setName(String name)
-	{
-		nameLength = (short)name.length();
-		this.name = name.getBytes();
-	}
-	
-	public String getName() 
-	{
-		return new String(name, 0, nameLength);
 	}
 	
 	public int getBytes(byte[] dest, int pointer)
