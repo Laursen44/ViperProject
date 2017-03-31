@@ -1,5 +1,4 @@
-package GameEngine;
-//thomas is a....
+package GameEngine.Framework;
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.event.KeyListener;
@@ -8,10 +7,11 @@ import java.awt.image.BufferStrategy;
 public class Game extends Canvas implements Runnable
 {
 	private static final long serialVersionUID = 5997611677775171115L;
-	private static final int WIDTH = 800, HEIGHT = WIDTH / 16 * 9;
+	private static final int WIDTH = 1000, HEIGHT = WIDTH / 12 * 9;
 	private boolean running = false;
 	private Graphics g;
 	private Thread game;
+	private Thread inputListener;
 	private ObjectHandler handler;
 	
 	public static void main(String[] args)
@@ -21,17 +21,18 @@ public class Game extends Canvas implements Runnable
 
 	public Game() 
 	{
-		new Window(WIDTH, HEIGHT, "Game Engine", this);
 		handler = new ObjectHandler();
-		this.addKeyListener(new InputManager(handler));
+		new Window(WIDTH, HEIGHT, "Game Engine", this);
+		
 	}
 
 	public synchronized void start()
 	{
-		game = new Thread(this);
+		game = new Thread(() -> run());
 		game.start();
+		inputListener = new Thread(() -> inputListen(),"input thread");
+		inputListener.start();
 		running = true;
-		System.out.println("hej");
 	}
 
 	public synchronized void stop()
@@ -42,6 +43,11 @@ public class Game extends Canvas implements Runnable
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void inputListen()
+	{
+		this.addKeyListener(new InputManager(handler));
 	}
 	
 	public void run()

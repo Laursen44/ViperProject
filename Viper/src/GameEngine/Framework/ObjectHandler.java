@@ -1,6 +1,7 @@
-package GameEngine;
+package GameEngine.Framework;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.LinkedList;
 
 public class ObjectHandler 
@@ -10,6 +11,7 @@ public class ObjectHandler
 	public ObjectHandler()
 	{
 		addObject(new Player("Thomas", new Vector2D(100,100), ID.PLAYER, null));
+		addObject(new Block(new Rectangle(400,500,200,200)));
 	}
 	
 	public void update()

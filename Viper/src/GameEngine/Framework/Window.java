@@ -1,4 +1,4 @@
-package GameEngine;
+package GameEngine.Framework;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
