@@ -3,6 +3,7 @@ package GameEngine.Framework;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 public class Player extends GameObject
@@ -14,20 +15,19 @@ public class Player extends GameObject
 	private int health = 100;
 	private String name;
 	public ArrayList<Rectangle> playerBounds = new ArrayList<Rectangle>();
-	public Rectangle collissionTop;
-	public Rectangle collissionBot;
-	public Rectangle collissionLeft;
-	public Rectangle collissionRight;
+	public Rectangle collisionTop;
+	public Rectangle collisionBot;
+	public Rectangle collisionLeft;
+	public Rectangle collisionRight;
+	public float playerX, playerY = 200;
+	public int playerW, playerH = 50;
 	
 	public Player(String name, Vector2D vec, ID id, Graphics g)
 	{
 		super(vec, id);
 		this.name = name;
 		this.g = g;
-		playerBounds.add(collissionTop);
-		playerBounds.add(collissionBot);
-		playerBounds.add(collissionLeft);
-		playerBounds.add(collissionRight);
+		collisionTop.setBounds(rect);
 	}
 	
 	public void move()
@@ -37,6 +37,7 @@ public class Player extends GameObject
 		vec = vec.add(new Vector2D ( 0 , getVelY() * 5 ));
 		vec = vec.add(new Vector2D ( getVelX() * 5 , 0 ));
 		}
+
 	}
 	
 	public void collision()
@@ -44,7 +45,7 @@ public class Player extends GameObject
 		ArrayList<Rectangle> blocks = Block.getArrayList();
 		
 		for (Rectangle block : blocks)
-			if (collissionTop.intersects(block.getBounds()))
+			if (collisionTop.getBounds().intersects(block.getBounds()))
 			{
 				System.out.println("gayThomas");
 				
@@ -53,27 +54,22 @@ public class Player extends GameObject
 	
 	public void bounds()
 	{
-		//collissionTop = new Rectangle((int)vec.getX(), (int)vec.getY(), 50, 5);
-		setBounds((int)vec.getX(), (int)vec.getY(), 50, 5);
-		collissionBot = new Rectangle((int)vec.getX(), (int)vec.getY() + 45, 50, 5);
-		setBounds(collissionBot);
-		collissionLeft = new Rectangle((int)vec.getX(), (int)vec.getY(), 5, 50);
-		setBounds(collissionLeft);
-		collissionRight = new Rectangle((int)vec.getX() + 45, (int)vec.getY(), 5, 50);
-		setBounds(collissionRight);
+		//collisionTop.setBounds(new Rectangle((int)vec.getX(), (int)vec.getY(), 50, 5));
+
 	}
 	
 	public void update() 
 	{
+		
+	
 		move();
-		bounds();
 		collision();
 	}
 
 	public void render(Graphics g)
 	{
 		g.setColor(Color.black);
-		g.fillRect((int)vec.getX(),(int)vec.getY(),50,50);
+		g.fillRect((int)vec.getX(),(int)vec.getY(), playerH, playerW);
 		g.setColor(Color.WHITE);
 		g.drawString(this.name, (int)vec.getX(), (int)vec.getY());
 		g.setColor(Color.RED);

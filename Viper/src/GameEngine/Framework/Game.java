@@ -21,16 +21,16 @@ public class Game extends Canvas implements Runnable
 
 	public Game() 
 	{
-		handler = new ObjectHandler();
 		new Window(WIDTH, HEIGHT, "Game Engine", this);
+		handler = new ObjectHandler();
 		
 	}
 
 	public synchronized void start()
 	{
-		game = new Thread(() -> run());
+		game = new Thread(() -> run(), "Gameloop thread");
 		game.start();
-		inputListener = new Thread(() -> inputListen(),"input thread");
+		inputListener = new Thread(() -> inputListen(),"Input thread");
 		inputListener.start();
 		running = true;
 	}
