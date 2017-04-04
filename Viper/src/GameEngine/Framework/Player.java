@@ -39,7 +39,6 @@ public class Player extends GameObject
 		vec = vec.add(new Vector2D ( 0 , getVelY() * 5 ));
 		vec = vec.add(new Vector2D ( getVelX() * 5 , 0 ));
 		}
-
 	}
 	
 	public void collision()

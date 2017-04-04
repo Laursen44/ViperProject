@@ -21,6 +21,7 @@ public class Window extends Canvas
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(game);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		game.start();
 		
