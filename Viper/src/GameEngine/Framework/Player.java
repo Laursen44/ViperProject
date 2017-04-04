@@ -3,8 +3,7 @@ package GameEngine.Framework;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Player extends GameObject
 {
@@ -14,25 +13,28 @@ public class Player extends GameObject
 	private int damage;
 	private int health = 100;
 	private String name;
-	public ArrayList<Rectangle> playerBounds = new ArrayList<Rectangle>();
-	public Rectangle collisionTop;
-	public Rectangle collisionBot;
-	public Rectangle collisionLeft;
-	public Rectangle collisionRight;
-	public float playerX, playerY = 200;
-	public int playerW, playerH = 50;
+	public Rectangle collisionRect;
+	public int pW = 32, pH = 32;
+	private boolean updateBounds = false;
+	int pXX;
+	int pYY;
 	
-	public Player(String name, Vector2D vec, ID id, Graphics g)
+	
+	public Player(String name, Vector2D vec, Graphics g)
 	{
-		super(vec, id);
+		this.vec = vec;
 		this.name = name;
 		this.g = g;
-		collisionTop.setBounds(rect);
+		int pX = (int)vec.getX();
+		int pY = (int)vec.getY();
+		collisionRect = new Rectangle(pX, pY, pW, pH);
+		collisionRect.setBounds(collisionRect);
+		updateBounds = true;
+		
 	}
 	
 	public void move()
 	{
-		//if(!collision())
 		{
 		vec = vec.add(new Vector2D ( 0 , getVelY() * 5 ));
 		vec = vec.add(new Vector2D ( getVelX() * 5 , 0 ));
@@ -42,34 +44,44 @@ public class Player extends GameObject
 	
 	public void collision()
 	{
-		ArrayList<Rectangle> blocks = Block.getArrayList();
+		LinkedList<Rectangle> blocks = Block.getLinkedList();
 		
 		for (Rectangle block : blocks)
-			if (collisionTop.getBounds().intersects(block.getBounds()))
+			if (collisionRect.getBounds().intersects(block.getBounds()))
 			{
-				System.out.println("gayThomas");
+				System.out.println("collision!");
 				
 			}
 	}
 	
-	public void bounds()
+	public void bounds(Rectangle rect)
 	{
-		//collisionTop.setBounds(new Rectangle((int)vec.getX(), (int)vec.getY(), 50, 5));
+		collisionRect.setBounds(rect);
 
 	}
 	
-	public void update() 
+	public Rectangle updateBounds()
 	{
-		
+		pXX = (int)vec.getX();
+		pYY = (int)vec.getY();
+		collisionRect = new Rectangle(pXX, pYY, pW, pH);
+		collisionRect.setBounds(collisionRect);
+		return collisionRect;
+	}
 	
+	public void update() 
+	{		
 		move();
-		collision();
+		if(updateBounds){
+			updateBounds();
+			collision();
+		}
 	}
 
 	public void render(Graphics g)
 	{
 		g.setColor(Color.black);
-		g.fillRect((int)vec.getX(),(int)vec.getY(), playerH, playerW);
+		g.fillRect((int)vec.getX(),(int)vec.getY(), 32, 32);
 		g.setColor(Color.WHITE);
 		g.drawString(this.name, (int)vec.getX(), (int)vec.getY());
 		g.setColor(Color.RED);
