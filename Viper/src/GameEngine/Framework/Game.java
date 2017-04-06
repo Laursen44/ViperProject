@@ -11,7 +11,6 @@ public class Game extends Canvas implements Runnable
 	private boolean running = false;
 	private Graphics g;
 	private Thread game;
-	private Thread inputListener;
 	private ObjectHandler handler;
 	
 	public static void main(String[] args)
@@ -23,7 +22,8 @@ public class Game extends Canvas implements Runnable
 	{
 		new Window(WIDTH, HEIGHT, "Game Engine", this);
 		handler = new ObjectHandler();
-		this.addKeyListener(new InputManager(handler));
+		KeyboardManager keyboard = new KeyboardManager();
+		addKeyListener(keyboard);
 	}
 		
 
@@ -31,8 +31,6 @@ public class Game extends Canvas implements Runnable
 	{
 		game = new Thread(() -> run(), "Gameloop thread");
 		game.start();
-		inputListener = new Thread(() -> inputListen(),"Input thread");
-		//inputListener.start();
 		running = true;
 	}
 
@@ -44,11 +42,6 @@ public class Game extends Canvas implements Runnable
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public void inputListen()
-	{
-		this.addKeyListener(new InputManager(handler));
 	}
 	
 	public void run()
@@ -107,5 +100,6 @@ public class Game extends Canvas implements Runnable
 	public void update()
 	{
 		handler.update();
+		KeyboardManager.update();
 	}
 }

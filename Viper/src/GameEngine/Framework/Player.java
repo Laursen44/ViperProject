@@ -13,12 +13,15 @@ public class Player extends GameObject
 	private int damage;
 	private int health = 100;
 	private String name;
-	public Rectangle collisionRect;
+	public Rectangle collisionRectTop;
+	public Rectangle collisionRectBot;
+	public Rectangle collisionRectLeft;
+	public Rectangle collisionRectRight;
 	public int pW = 32, pH = 32;
 	private boolean updateBounds = false;
-	int pXX;
-	int pYY;
-	
+	int pXX, pYY;
+	int hDir, vDir;
+	private KeyboardManager input;
 	
 	public Player(String name, Vector2D vec, Graphics g)
 	{
@@ -27,53 +30,120 @@ public class Player extends GameObject
 		this.g = g;
 		int pX = (int)vec.getX();
 		int pY = (int)vec.getY();
-		collisionRect = new Rectangle(pX, pY, pW, pH);
-		collisionRect.setBounds(collisionRect);
+		collisionRectTop = new Rectangle(pX + 6, pY, pW - 12, pH - 30);
+		collisionRectTop.setBounds(collisionRectTop);
+		collisionRectBot = new Rectangle(pX + 6, pY + 30, pW - 12, pH - 30);
+		collisionRectBot.setBounds(collisionRectBot);
+		collisionRectLeft = new Rectangle(pX, pY + 6 , pW - 30, pH - 12);
+		collisionRectLeft.setBounds(collisionRectLeft);
+		collisionRectRight = new Rectangle(pX + 30, pY + 6 , pW - 30, pH - 12);
+		collisionRectRight.setBounds(collisionRectRight);
 		updateBounds = true;
 		
 	}
 	
 	public void move()
 	{
-		{
-		vec = vec.add(new Vector2D ( 0 , getVelY() * 5 ));
-		vec = vec.add(new Vector2D ( getVelX() * 5 , 0 ));
-		}
+		if (KeyboardManager.up && !checkCollisionTop()) 	 vec = vec.add(new Vector2D (  0 , -1 * 5 ));
+		if (KeyboardManager.down && !checkCollisionBot())	 vec = vec.add(new Vector2D ( 0 , 1 * 5 ));
+		if (KeyboardManager.left && !checkCollisionLeft())	 vec = vec.add(new Vector2D ( - 1 * 5 , 0 ));
+		if (KeyboardManager.right && !checkCollisionRight()) vec = vec.add(new Vector2D (  1 * 5 , 0 ));
 	}
 	
-	public void collision()
+	
+	public boolean checkCollisionTop()
 	{
 		LinkedList<Rectangle> blocks = Block.getLinkedList();
-		
 		for (Rectangle block : blocks)
-			if (collisionRect.getBounds().intersects(block.getBounds()))
+			if (collisionRectTop.getBounds().intersects(block.getBounds()))
 			{
 				System.out.println("collision!");
-				
+				return true;
 			}
+		return false;
 	}
 	
-	public void bounds(Rectangle rect)
+	public boolean checkCollisionBot()
 	{
-		collisionRect.setBounds(rect);
-
+		LinkedList<Rectangle> blocks = Block.getLinkedList();
+		for (Rectangle block : blocks)
+			if (collisionRectBot.getBounds().intersects(block.getBounds()))
+			{
+				System.out.println("collision!");
+				return true;
+			}
+		return false;
 	}
 	
-	public Rectangle updateBounds()
+	public boolean checkCollisionLeft()
+	{
+		LinkedList<Rectangle> blocks = Block.getLinkedList();
+		for (Rectangle block : blocks)
+			if (collisionRectLeft.getBounds().intersects(block.getBounds()))
+			{
+				System.out.println("collision!");
+				return true;
+			}
+		return false;
+	}
+	
+	public boolean checkCollisionRight()
+	{
+		LinkedList<Rectangle> blocks = Block.getLinkedList();
+		for (Rectangle block : blocks)
+			if (collisionRectRight.getBounds().intersects(block.getBounds()))
+			{
+				System.out.println("collision!");
+				return true;
+			}
+		return false;
+	}
+	
+	public Rectangle updateBoundsTop()
 	{
 		pXX = (int)vec.getX();
 		pYY = (int)vec.getY();
-		collisionRect = new Rectangle(pXX, pYY, pW, pH);
-		collisionRect.setBounds(collisionRect);
-		return collisionRect;
+		collisionRectTop = new Rectangle(pXX + 6, pYY, pW - 12, pH - 30);
+		collisionRectTop.setBounds(collisionRectTop);
+		return collisionRectTop;
+	}
+	
+	public Rectangle updateBoundsBot()
+	{
+		pXX = (int)vec.getX();
+		pYY = (int)vec.getY();
+		collisionRectBot = new Rectangle(pXX + 6, pYY + 30, pW - 12, pH - 30);
+		collisionRectBot.setBounds(collisionRectBot);
+		return collisionRectBot;
+	}
+	
+	public Rectangle updateBoundsLeft()
+	{
+		pXX = (int)vec.getX();
+		pYY = (int)vec.getY();
+		collisionRectLeft = new Rectangle(pXX, pYY + 6 , pW - 30, pH - 12);
+		collisionRectLeft.setBounds(collisionRectLeft);
+		return collisionRectLeft;
+	}
+	
+	public Rectangle updateBoundsRight()
+	{
+		pXX = (int)vec.getX();
+		pYY = (int)vec.getY();
+		collisionRectRight = new Rectangle(pXX + 30, pYY + 6 , pW - 30, pH - 12);
+		collisionRectRight.setBounds(collisionRectRight);
+		return collisionRectRight;
 	}
 	
 	public void update() 
 	{		
 		move();
-		if(updateBounds){
-			updateBounds();
-			collision();
+		if(updateBounds)
+		{
+			updateBoundsTop();
+			updateBoundsBot();
+			updateBoundsLeft();
+			updateBoundsRight();
 		}
 	}
 

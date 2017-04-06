@@ -7,7 +7,6 @@ public abstract class GameObject extends Rectangle {
 
 	private static final long serialVersionUID = 1L;
 	protected Vector2D vec;
-	protected int velX, velY;
 	protected ID id;
 	
 	public GameObject()
@@ -30,22 +29,6 @@ public abstract class GameObject extends Rectangle {
 
 	public void setVec(Vector2D vec) {
 		this.vec = vec;
-	}
-
-	public int getVelX() {
-		return velX;
-	}
-
-	public void setVelX(int velX) {
-		this.velX = velX;
-	}
-
-	public int getVelY() {
-		return velY;
-	}
-
-	public void setVelY(int velY) {
-		this.velY = velY;
 	}
 
 	public ID getId() {
