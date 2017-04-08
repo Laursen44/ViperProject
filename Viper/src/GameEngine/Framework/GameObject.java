@@ -10,8 +10,12 @@ public abstract class GameObject extends Rectangle {
 	protected ID id;
 	
 	public GameObject()
-	{
-		
+	{	
+	}
+	
+	public GameObject(Vector2D vec)
+	{	
+		this.vec = vec;
 	}
 	
 	public GameObject(Vector2D vec, ID id)

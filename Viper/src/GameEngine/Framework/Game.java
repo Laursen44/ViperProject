@@ -1,7 +1,7 @@
 package GameEngine.Framework;
 import java.awt.Canvas;
 import java.awt.Graphics;
-import java.awt.event.KeyListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferStrategy;
 
 public class Game extends Canvas implements Runnable
@@ -24,6 +24,9 @@ public class Game extends Canvas implements Runnable
 		handler = new ObjectHandler();
 		KeyboardManager keyboard = new KeyboardManager();
 		addKeyListener(keyboard);
+		MouseManager mouse = new MouseManager();
+		addMouseListener(mouse);
+		addMouseMotionListener(mouse);
 	}
 		
 

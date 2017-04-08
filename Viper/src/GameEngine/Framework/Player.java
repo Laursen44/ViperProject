@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
+import javafx.scene.input.MouseButton;
+
 public class Player extends GameObject
 {
 
@@ -18,16 +20,15 @@ public class Player extends GameObject
 	public Rectangle collisionRectLeft;
 	public Rectangle collisionRectRight;
 	public int pW = 32, pH = 32;
-	private boolean updateBounds = false;
+	private boolean updateBounds = false, Shoot = false;
 	int pXX, pYY;
 	int hDir, vDir;
-	private KeyboardManager input;
+	ObjectHandler handler;
 	
-	public Player(String name, Vector2D vec, Graphics g)
+	public Player(String name, Vector2D vec)
 	{
 		this.vec = vec;
 		this.name = name;
-		this.g = g;
 		int pX = (int)vec.getX();
 		int pY = (int)vec.getY();
 		collisionRectTop = new Rectangle(pX + 6, pY, pW - 12, pH - 30);
@@ -39,7 +40,25 @@ public class Player extends GameObject
 		collisionRectRight = new Rectangle(pX + 30, pY + 6 , pW - 30, pH - 12);
 		collisionRectRight.setBounds(collisionRectRight);
 		updateBounds = true;
+		Shoot = true;
+	}
+	
+	public void shoot(Vector2D initVec, float aimX, float aimY) 
+	{
+		float opposite = aimY - initVec.getY();
+		float adjacent = aimX - initVec.getX();
+		float angle = (float)Math.atan2(opposite, adjacent);
 		
+		Projectile p = new BasicBullet(initVec, angle);
+		ObjectHandler.addBullet(p);
+	}
+	
+	public void checkIfShot()
+	{
+		if (MouseManager.getB() == 1)
+		{
+			shoot(vec, MouseManager.getX(), MouseManager.getY());
+		}
 	}
 	
 	public void move()
@@ -145,6 +164,11 @@ public class Player extends GameObject
 			updateBoundsLeft();
 			updateBoundsRight();
 		}
+		
+		 if (Shoot)
+		 {
+			 checkIfShot();
+		 }
 	}
 
 	public void render(Graphics g)

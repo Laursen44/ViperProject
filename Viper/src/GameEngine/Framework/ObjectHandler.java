@@ -6,11 +6,12 @@ import java.util.LinkedList;
 
 public class ObjectHandler 
 {
-	LinkedList<GameObject> object = new LinkedList<GameObject>();
+	static LinkedList<GameObject> object = new LinkedList<GameObject>();
+	static LinkedList<Projectile> bullet = new LinkedList<Projectile>();
 	
 	public ObjectHandler()
 	{
-		addObject(new Player("Thomas", new Vector2D(200, 200), null));
+		addObject(new Player("Thomas", new Vector2D(200, 200)));
 		addObject(new Block(new Rectangle(400,500,200,200)));
 	}
 	
@@ -18,8 +19,14 @@ public class ObjectHandler
 	{
 		for(int i = 0; i < object.size(); i++)
 		{
-			GameObject tempObject = object.get(i);
-			tempObject.update();
+			GameObject o = object.get(i);
+			o.update();
+		}
+		
+		for(int i = 0; i < bullet.size(); i++)
+		{
+			Projectile p = bullet.get(i);
+			p.update();
 		}
 	}
 	
@@ -27,18 +34,34 @@ public class ObjectHandler
 	{
 		for(int i = 0; i < object.size(); i++)
 		{
-			GameObject tempObject = object.get(i);
-			tempObject.render(g);
+			GameObject o = object.get(i);
+			o.render(g);
+		}
+		
+		for(int i = 0; i < bullet.size(); i++)
+		{
+			Projectile p = bullet.get(i);
+			p.render(g);
 		}
 	}
 	
-	public void addObject(GameObject object)
+	public static void addObject(GameObject o)
 	{
-		this.object.add(object);
+		object.add(o);
 	}
 	
-	public void removeObject(GameObject object)
+	public static void removeObject(GameObject o)
 	{
-		this.object.remove(object);
+		object.remove(o);
+	}
+	
+	public static void addBullet(Projectile p)
+	{
+		bullet.add(p);
+	}
+	
+	public static void removeBullet(Projectile p)
+	{
+		bullet.remove(p);
 	}
 }

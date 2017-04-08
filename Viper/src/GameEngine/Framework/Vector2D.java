@@ -9,7 +9,16 @@ public class Vector2D {
 		this.x = x; 
 		this.y = y;
 	}
+
+	public Vector2D(double x, double y)
+	{
+		this.x = (float)x; 
+		this.y = (float)y;
+	}
 	
+	public Vector2D() {
+	}
+
 	public float length()
 	{
 		return(int)Math.sqrt(x * x + y * y);

@@ -12,8 +12,7 @@ public class Block extends GameObject
 	
 	public Rectangle rect;
 	public static LinkedList<Rectangle> blockBounds = new LinkedList<Rectangle>();
-	
-	public Block(){}
+
 
 	public Block(Rectangle rect) 
 	{
