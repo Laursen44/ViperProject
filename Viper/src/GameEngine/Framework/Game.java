@@ -20,7 +20,7 @@ public class Game extends Canvas implements Runnable
 
 	public Game() 
 	{
-		new Window(WIDTH, HEIGHT, "Game Engine", this);
+		new Window(WIDTH, HEIGHT, "Viper Project", this);
 		handler = new ObjectHandler();
 		KeyboardManager keyboard = new KeyboardManager();
 		addKeyListener(keyboard);

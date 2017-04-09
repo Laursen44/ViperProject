@@ -6,8 +6,8 @@ import java.util.LinkedList;
 
 public class ObjectHandler 
 {
-	static LinkedList<GameObject> object = new LinkedList<GameObject>();
-	static LinkedList<Projectile> bullet = new LinkedList<Projectile>();
+	public static LinkedList<GameObject> object = new LinkedList<GameObject>();
+	public static LinkedList<Projectile> bullet = new LinkedList<Projectile>();
 	
 	public ObjectHandler()
 	{
@@ -63,5 +63,13 @@ public class ObjectHandler
 	public static void removeBullet(Projectile p)
 	{
 		bullet.remove(p);
+	}
+	
+	public static LinkedList<GameObject> getObjectList() {
+		return object;
+	}
+	
+	public static LinkedList<Projectile> getBulletList() {
+		return bullet;
 	}
 }

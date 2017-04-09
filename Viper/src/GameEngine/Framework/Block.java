@@ -18,8 +18,7 @@ public class Block extends GameObject
 	{
 		id = ID.STATIC;
 		this.rect = rect;
-		setBounds(rect);
-		blockBounds.add(rect);
+		addStaticCollision(rect);
 	}
 	
 	public void update() 
@@ -35,6 +34,12 @@ public class Block extends GameObject
 
 	public static LinkedList<Rectangle> getLinkedList() {
 		return blockBounds;
+	}
+	
+	public void addStaticCollision(Rectangle rect)
+	{
+		setBounds(rect);
+		blockBounds.add(rect);
 	}
 
 }
