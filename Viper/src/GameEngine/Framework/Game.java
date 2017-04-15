@@ -3,6 +3,7 @@ import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 
 public class Game extends Canvas implements Runnable
 {
@@ -12,6 +13,7 @@ public class Game extends Canvas implements Runnable
 	private Graphics g;
 	private Thread game;
 	private ObjectHandler handler;
+	private Sprites loadSpriteSheets;
 	
 	public static void main(String[] args)
 	{
@@ -27,6 +29,7 @@ public class Game extends Canvas implements Runnable
 		MouseManager mouse = new MouseManager();
 		addMouseListener(mouse);
 		addMouseMotionListener(mouse);
+		
 	}
 		
 
@@ -55,6 +58,7 @@ public class Game extends Canvas implements Runnable
 		double delta = 0;
 		double timer = System.currentTimeMillis();
 		int frames = 0;
+		Sprites.initialize();
 		// keep looping round until the game ends
 		while (running)
 		{
@@ -84,20 +88,20 @@ public class Game extends Canvas implements Runnable
 
 	public void render()
 	{
-		BufferStrategy bs = getBufferStrategy();
-		if(bs == null)
+		BufferStrategy buffStrat = getBufferStrategy();
+		if(buffStrat == null)
 		{
 			createBufferStrategy(3);
 			return;
 		}
 		
-		g = bs.getDrawGraphics();
+		g = buffStrat.getDrawGraphics();
 		
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		handler.render(g);
 		
 		g.dispose();
-		bs.show();
+		buffStrat.show();
 	}
 
 	public void update()
@@ -105,4 +109,12 @@ public class Game extends Canvas implements Runnable
 		handler.update();
 		KeyboardManager.update();
 	}
+	
+
 }
+
+
+
+
+
+

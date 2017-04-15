@@ -183,6 +183,8 @@ public class Player extends GameObject
 		g.fillRect(30, 30, health*2, 50);
 		g.setColor(Color.BLACK);
 		g.drawString("HEALTH", 100, 60);
+		g.drawImage(Sprites.grass1, (int)vec.getX(), (int)vec.getY(), null);
+
 	}
 	
 	public int getDamage() 
