@@ -1,4 +1,4 @@
-package GameEngine.Framework;
+package GameEngine.Util;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -6,8 +6,8 @@ import java.awt.event.KeyListener;
 public class KeyboardManager implements KeyListener 
 {
 
-	static boolean[] keys = new boolean[160];
-	static boolean up, down, left, right;
+	public static boolean[] keys = new boolean[160];
+	public static boolean up, down, left, right;
 
 	public static void update()
 	{

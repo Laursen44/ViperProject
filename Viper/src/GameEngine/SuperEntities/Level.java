@@ -1,6 +1,8 @@
-package GameEngine.Framework;
+package GameEngine.SuperEntities;
 
 import java.awt.Graphics;
+
+import GameEngine.Framework.ObjectHandler;
 
 public class Level extends ObjectHandler
 {

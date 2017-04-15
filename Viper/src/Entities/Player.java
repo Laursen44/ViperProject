@@ -1,11 +1,20 @@
-package GameEngine.Framework;
+package Entities;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
-import javafx.scene.input.MouseButton;
+import GameEngine.Framework.ObjectHandler;
+import GameEngine.SuperEntities.Block;
+import GameEngine.SuperEntities.GameObject;
+import GameEngine.SuperEntities.Projectile;
+import GameEngine.SuperEntities.Sprites;
+import GameEngine.Util.KeyboardManager;
+import GameEngine.Util.MouseManager;
+import GameEngine.Util.Vector2D;
+
+
 
 public class Player extends GameObject
 {
@@ -15,6 +24,8 @@ public class Player extends GameObject
 	private int damage;
 	private int health = 100;
 	private String name;
+	int cooldownTimer = 30;
+	int cooldown = 30;
 	public Rectangle collisionRectTop;
 	public Rectangle collisionRectBot;
 	public Rectangle collisionRectLeft;
@@ -55,9 +66,10 @@ public class Player extends GameObject
 	
 	public void checkIfShot()
 	{
-		if (MouseManager.getB() == 1)
+		if (MouseManager.getB() == 1 && cooldownTimer > cooldown)
 		{
 			shoot(vec, MouseManager.getX(), MouseManager.getY());
+			cooldownTimer = 0;
 		}
 	}
 	
@@ -158,7 +170,7 @@ public class Player extends GameObject
 	{		
 		move();
 		if(updateBounds)
-		{
+		{ 
 			updateBoundsTop();
 			updateBoundsBot();
 			updateBoundsLeft();
@@ -169,22 +181,22 @@ public class Player extends GameObject
 		 {
 			 checkIfShot();
 		 }
+		 cooldownTimer++;
 	}
 
 	public void render(Graphics g)
 	{
-		g.setColor(Color.black);
-		g.fillRect((int)vec.getX(),(int)vec.getY(), 32, 32);
 		g.setColor(Color.WHITE);
 		g.drawString(this.name, (int)vec.getX(), (int)vec.getY());
+		g.drawImage(Sprites.ship1, (int)vec.getX(), (int)vec.getY(), null);
+		
+		// healthbar
 		g.setColor(Color.RED);
 		g.fillRect(30, 30, 200, 50);
 		g.setColor(Color.GREEN);
 		g.fillRect(30, 30, health*2, 50);
 		g.setColor(Color.BLACK);
 		g.drawString("HEALTH", 100, 60);
-		g.drawImage(Sprites.grass1, (int)vec.getX(), (int)vec.getY(), null);
-
 	}
 	
 	public int getDamage() 

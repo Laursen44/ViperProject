@@ -1,4 +1,4 @@
-package GameEngine.Framework;
+package GameEngine.Util;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -6,9 +6,9 @@ import java.awt.event.MouseMotionListener;
 
 public class MouseManager implements MouseListener, MouseMotionListener {
 	
-	private static int mouseX = -1;
-	private static int mouseY = -1;
-	private static int mouseB = -1;
+	public static int mouseX = -1;
+	public static int mouseY = -1;
+	public static int mouseB = -1;
 	
 	public static int getX()
 	{

@@ -1,4 +1,4 @@
-package GameEngine.Framework;
+package GameEngine.Util;
 
 public class Vector2D {
 

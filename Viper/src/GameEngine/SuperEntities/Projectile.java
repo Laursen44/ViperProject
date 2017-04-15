@@ -1,26 +1,42 @@
-package GameEngine.Framework;
+package GameEngine.SuperEntities;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
-public class BasicBullet extends Projectile
-{
-	private static final long serialVersionUID = 1L;
+import Entities.ID;
+import GameEngine.Framework.ObjectHandler;
+import GameEngine.Util.Vector2D;
 
-	public BasicBullet(Vector2D vec, double dir) 
+public class Projectile extends GameObject {
+
+	private static final long serialVersionUID = 1L;
+	protected Graphics g;
+	protected int width = 16, height = 16;
+	protected double angle;
+	protected int speed;
+	protected int pXX, pYY;
+	protected Vector2D posVec;
+	protected Vector2D shootVec;
+	public Rectangle collisiosRect;
+	protected boolean updateBounds = false;
+	
+	public Projectile(Vector2D vec, double dir) 
 	{
-		super(vec, dir);
-		speed = 6;
-		
-		shootVec = new Vector2D(Math.cos(angle), Math.sin(angle));
-		shootVec = shootVec.mul(speed);
+		posVec = vec;
+		angle = dir;
+		id = ID.PROJECTTILE;
 		int pX = (int)vec.getX();
 		int pY = (int)vec.getY();
 		collisiosRect = new Rectangle(pX, pY, width, height);
 		collisiosRect.setBounds(collisiosRect);
 		updateBounds = true;
+	}
+	
+	public void move()
+	{
+
 	}
 	
 	public Rectangle updateBounds()
@@ -32,7 +48,7 @@ public class BasicBullet extends Projectile
 		return collisiosRect;
 	}
 	
-	public void removeIfCollideBlock()
+	public void removeIfCollision()
 	{
 		LinkedList<Rectangle> blocks = Block.getLinkedList();
 		LinkedList<Projectile> bullets = ObjectHandler.getBulletList();
@@ -49,26 +65,20 @@ public class BasicBullet extends Projectile
 		}
 	}
 	
-	public void move()
-	{
-		posVec = posVec.add(shootVec);
-	}
-	
-	public void update()
+	public void update() 
 	{
 		move();
-		
 		if (updateBounds)
 		{
 			updateBounds();
-			removeIfCollideBlock();
+			removeIfCollision();
 		}
 	}
-	
-	public void render(Graphics g)
+
+	public void render(Graphics g) 
 	{
 		g.setColor(Color.YELLOW);
 		g.fillRect((int)posVec.getX(), (int)posVec.getY(), 16, 16);
 	}
-	
+
 }

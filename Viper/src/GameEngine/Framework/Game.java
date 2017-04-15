@@ -5,15 +5,18 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
+import GameEngine.SuperEntities.Sprites;
+import GameEngine.Util.KeyboardManager;
+import GameEngine.Util.MouseManager;
+
 public class Game extends Canvas implements Runnable
 {
 	private static final long serialVersionUID = 5997611677775171115L;
-	private static final int WIDTH = 1000, HEIGHT = WIDTH / 12 * 9;
+	public static final int WIDTH = 1000, HEIGHT = WIDTH / 12 * 9;
 	private boolean running = false;
 	private Graphics g;
 	private Thread game;
 	private ObjectHandler handler;
-	private Sprites loadSpriteSheets;
 	
 	public static void main(String[] args)
 	{
@@ -29,7 +32,6 @@ public class Game extends Canvas implements Runnable
 		MouseManager mouse = new MouseManager();
 		addMouseListener(mouse);
 		addMouseMotionListener(mouse);
-		
 	}
 		
 
@@ -52,11 +54,11 @@ public class Game extends Canvas implements Runnable
 	
 	public void run()
 	{
-		double lastLoopTime = System.nanoTime();
-		int targetFps = 60;
-		double optimalTime = 1000000000 / targetFps;  
+		long lastLoopTime = System.nanoTime();
+		double targetFps = 60;
+		double optimalTime = 1000000000.0 / targetFps;  
 		double delta = 0;
-		double timer = System.currentTimeMillis();
+		long timer = System.currentTimeMillis();
 		int frames = 0;
 		Sprites.initialize();
 		// keep looping round until the game ends
@@ -108,6 +110,7 @@ public class Game extends Canvas implements Runnable
 	{
 		handler.update();
 		KeyboardManager.update();
+		
 	}
 	
 

@@ -1,23 +1,18 @@
-package GameEngine.Framework;
+package Entities;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class Block extends GameObject 
+import GameEngine.SuperEntities.Block;
+import GameEngine.SuperEntities.Sprites;
+
+public class WallBlockVerti extends Block 
 {
 	private static final long serialVersionUID = 1L;
-	
-	public Rectangle rect;
-	public static LinkedList<Rectangle> blockBounds = new LinkedList<Rectangle>();
 
-
-	public Block(Rectangle rect) 
-	{
-		id = ID.STATIC;
-		this.rect = rect;
+	public WallBlockVerti(Rectangle rect) {
+		super(rect);
 		addStaticCollision(rect);
 	}
 	
@@ -28,8 +23,7 @@ public class Block extends GameObject
 
 	public void render(Graphics g) 
 	{
-		g.setColor(Color.BLUE);
-		g.fillRect(rect.x, rect.y, rect.width, rect.height);
+		g.drawImage(Sprites.wallVertical, rect.x, rect.y, null);
 	}
 
 	public static LinkedList<Rectangle> getLinkedList() {
@@ -41,5 +35,4 @@ public class Block extends GameObject
 		setBounds(rect);
 		blockBounds.add(rect);
 	}
-
 }

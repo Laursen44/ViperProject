@@ -1,38 +1,32 @@
-package GameEngine.Framework;
+package Entities;
 
-import java.awt.Color;
+
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
-public class Projectile extends GameObject {
+import GameEngine.Framework.ObjectHandler;
+import GameEngine.SuperEntities.Block;
+import GameEngine.SuperEntities.Projectile;
+import GameEngine.SuperEntities.Sprites;
+import GameEngine.Util.Vector2D;
 
+public class BasicBullet extends Projectile
+{
 	private static final long serialVersionUID = 1L;
-	protected Graphics g;
-	protected int width = 16, height = 16;
-	protected double angle;
-	protected int speed;
-	protected int pXX, pYY;
-	protected Vector2D posVec;
-	protected Vector2D shootVec;
-	protected Rectangle collisiosRect;
-	protected boolean updateBounds = false;
-	
-	public Projectile(Vector2D vec, double dir) 
+
+	public BasicBullet(Vector2D vec, double dir) 
 	{
-		posVec = vec;
-		angle = dir;
-		id = ID.PROJECTTILE;
+		super(vec, dir);
+		speed = 12;
+		
+		shootVec = new Vector2D(Math.cos(angle), Math.sin(angle));
+		shootVec = shootVec.mul(speed);
 		int pX = (int)vec.getX();
 		int pY = (int)vec.getY();
 		collisiosRect = new Rectangle(pX, pY, width, height);
 		collisiosRect.setBounds(collisiosRect);
 		updateBounds = true;
-	}
-	
-	public void move()
-	{
-
 	}
 	
 	public Rectangle updateBounds()
@@ -44,7 +38,7 @@ public class Projectile extends GameObject {
 		return collisiosRect;
 	}
 	
-	public void removeIfCollision()
+	public void removeIfCollideBlock()
 	{
 		LinkedList<Rectangle> blocks = Block.getLinkedList();
 		LinkedList<Projectile> bullets = ObjectHandler.getBulletList();
@@ -61,20 +55,25 @@ public class Projectile extends GameObject {
 		}
 	}
 	
-	public void update() 
+	public void move()
+	{
+		posVec = posVec.add(shootVec);
+	}
+	
+	public void update()
 	{
 		move();
+		
 		if (updateBounds)
 		{
 			updateBounds();
-			removeIfCollision();
+			removeIfCollideBlock();
 		}
 	}
-
-	public void render(Graphics g) 
+	
+	public void render(Graphics g)
 	{
-		g.setColor(Color.YELLOW);
-		g.fillRect((int)posVec.getX(), (int)posVec.getY(), 16, 16);
+		g.drawImage(Sprites.bulletWhite, (int)posVec.getX(), (int)posVec.getY(), null);
 	}
-
+	
 }
