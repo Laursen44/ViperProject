@@ -23,7 +23,7 @@ public class WallBlockHori extends Block
 
 	public void render(Graphics g) 
 	{
-		g.drawImage(Sprites.wallHorizontal, rect.x, rect.y, null);
+		g.drawImage(Sprites.wallLargeHorizontal, rect.x, rect.y, null);
 	}
 
 	public static LinkedList<Rectangle> getLinkedList() {

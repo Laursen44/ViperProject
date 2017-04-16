@@ -18,6 +18,6 @@ public class GrassTexture extends Texture
 	
 	public void render(Graphics g) 
 	{
-		g.drawImage(Sprites.grass1, (int)vec.getX(), (int)vec.getY(), null);
+		g.drawImage(Sprites.grass2, (int)vec.getX(), (int)vec.getY(), null);
 	}
 }

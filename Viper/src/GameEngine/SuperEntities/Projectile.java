@@ -36,7 +36,7 @@ public class Projectile extends GameObject {
 	
 	public void move()
 	{
-
+		
 	}
 	
 	public Rectangle updateBounds()
@@ -77,8 +77,7 @@ public class Projectile extends GameObject {
 
 	public void render(Graphics g) 
 	{
-		g.setColor(Color.YELLOW);
-		g.fillRect((int)posVec.getX(), (int)posVec.getY(), 16, 16);
+		
 	}
 
 }

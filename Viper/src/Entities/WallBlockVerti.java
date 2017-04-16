@@ -23,7 +23,7 @@ public class WallBlockVerti extends Block
 
 	public void render(Graphics g) 
 	{
-		g.drawImage(Sprites.wallVertical, rect.x, rect.y, null);
+		g.drawImage(Sprites.wallLargeVertical, rect.x, rect.y, null);
 	}
 
 	public static LinkedList<Rectangle> getLinkedList() {
