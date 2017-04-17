@@ -3,18 +3,16 @@ package GameEngine.Framework;
 import java.awt.Graphics;
 import java.util.LinkedList;
 import GameEngine.SuperEntities.GameObject;
-import GameEngine.SuperEntities.OnGUI;
 import GameEngine.SuperEntities.Projectile;
 
 public class ObjectHandler 
 {
 	public static LinkedList<GameObject> object = new LinkedList<GameObject>();
 	public static LinkedList<Projectile> bullet = new LinkedList<Projectile>();
-	private OnGUI gui;
 	
 	public ObjectHandler()
 	{
-		 gui = new OnGUI();
+		 
 	}
 	
 	public void update()
@@ -30,7 +28,6 @@ public class ObjectHandler
 			Projectile p = bullet.get(i);
 			p.update();
 		}
-		gui.update();
 	}
 	
 	public void render(Graphics g)
@@ -46,7 +43,6 @@ public class ObjectHandler
 			Projectile p = bullet.get(i);
 			p.render(g);
 		}
-		gui.render(g);
 	}
 	
 	public static void addObject(GameObject o)

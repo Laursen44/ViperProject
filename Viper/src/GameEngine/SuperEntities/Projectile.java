@@ -14,8 +14,7 @@ public class Projectile extends GameObject {
 	protected Graphics g;
 	protected int width = 16, height = 16;
 	protected double angle;
-	protected int speed;
-	protected int damage;
+	protected int speed, damage;
 	protected int pXX, pYY;
 	protected Vector2D posVec;
 	protected Vector2D shootVec;

@@ -92,10 +92,13 @@ public class Sprites
 		
 		healthbar = new Sprites().getSpriteSubImage(8, 3, 96, 32, loadedSpriteSheet1);
 		healthbarFrame = new Sprites().getSpriteSubImage(8, 1, 96, 32, loadedSpriteSheet1);
+		
 		Login = new Sprites().getSpriteSubImage(3, 5, 80, 32, loadedSpriteSheet1);
 		Loginhigh = new Sprites().getSpriteSubImage(3, 7, 80, 32, loadedSpriteSheet1);
+		
 		create = new Sprites().getSpriteSubImage(3, 9, 80, 32, loadedSpriteSheet1);
 		createhigh = new Sprites().getSpriteSubImage(3, 11, 80, 32, loadedSpriteSheet1);
+		
 		play = new Sprites().getSpriteSubImage(3, 15, 80, 32, loadedSpriteSheet1);
 		playhigh = new Sprites().getSpriteSubImage(3, 13, 80, 32, loadedSpriteSheet1);
 		

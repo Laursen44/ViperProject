@@ -3,7 +3,8 @@ import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
-import GameEngine.SuperEntities.Level;
+import GameEngine.GameDesign.Level;
+import GameEngine.GameDesign.OnGUI;
 import GameEngine.SuperEntities.Sprites;
 import GameEngine.Util.KeyboardManager;
 import GameEngine.Util.MouseManager;
@@ -11,12 +12,13 @@ import GameEngine.Util.MouseManager;
 public class Game extends Canvas implements Runnable
 {
 	private static final long serialVersionUID = 5997611677775171115L;
-	public static final int WIDTH = 1000, HEIGHT = WIDTH / 12 * 9;
+	public static final int WIDTH = 800, HEIGHT = WIDTH / 12 * 9;
 	private boolean running = false;
 	private Graphics g;
 	private Thread game;
 	private ObjectHandler handler;
 	private Level level;
+	private OnGUI gui;
 	
 	public static void main(String[] args)
 	{
@@ -28,6 +30,7 @@ public class Game extends Canvas implements Runnable
 		new Window(WIDTH, HEIGHT, "Viper Project", this);
 		handler = new ObjectHandler();
 		level = new Level();
+		gui = new OnGUI();
 		KeyboardManager keyboard = new KeyboardManager();
 		addKeyListener(keyboard);
 		MouseManager mouse = new MouseManager();
@@ -35,7 +38,6 @@ public class Game extends Canvas implements Runnable
 		addMouseMotionListener(mouse);
 	}
 		
-
 	public synchronized void start()
 	{
 		game = new Thread(() -> run(), "Gameloop thread");
@@ -55,9 +57,9 @@ public class Game extends Canvas implements Runnable
 	
 	public void run()
 	{
-		long lastLoopTime = System.nanoTime();
-		double targetFps = 60;
-		double optimalTime = 1000000000.0 / targetFps;  
+		long last = System.nanoTime();
+		double targetlooptime = 60;
+		double optimalTime = 1000000000.0 / targetlooptime;  
 		double delta = 0;
 		long timer = System.currentTimeMillis();
 		int frames = 0;
@@ -66,13 +68,22 @@ public class Game extends Canvas implements Runnable
 		while (running)
 		{
 			long now = System.nanoTime();
-			delta += (now - lastLoopTime) / optimalTime;
-			lastLoopTime = now;
+			delta += (now - last) / optimalTime;
+			last = now;
+			
+			// the difference between last and now is a benchmark to how fast the cpu can process code in nanoseconds
+			// that time is divided by the optimalTime which is a second in nanoseconds divided by 60.
+			// this gives us what 1 60th of a second (real time) in cpu processing nanoseconds time is.
+			// we can then decrement delta until it hits 1 and breaks the while loop.
+			// each iteration delta will be redone as last is set to now and now the new value of the nanoTime.
+			// executes roughly 60 times per second.
 			while(delta >= 1)
 			{
 				update();
 				delta--;
 			}
+			
+			// execute as as many times as possible
 			if(running)
 			{
 				render();
@@ -102,6 +113,7 @@ public class Game extends Canvas implements Runnable
 		
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		handler.render(g);
+		gui.render(g);
 		
 		g.dispose();
 		buffStrat.show();
@@ -111,14 +123,7 @@ public class Game extends Canvas implements Runnable
 	{
 		handler.update();
 		KeyboardManager.update();
+		gui.update();
 		level.update();
 	}
-	
-
 }
-
-
-
-
-
-

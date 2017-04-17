@@ -4,17 +4,14 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.LinkedList;
-
 import GameEngine.Framework.ObjectHandler;
+import GameEngine.GameDesign.OnGUI;
 import GameEngine.Util.KeyboardManager;
 import GameEngine.Util.MouseManager;
 import GameEngine.Util.Vector2D;
 
-
-
 public class Player extends GameObject
 {
-
 	private static final long serialVersionUID = 1L;
 	Graphics g;
 	private int health = 100;
@@ -55,21 +52,21 @@ public class Player extends GameObject
 		if (OnGUI.abillityBarActive == 1)
 		{
 			cooldown = 10;
-			Projectile p = new Projectile(initVec, angle, 20, 8, Sprites.bullet1Red);
+			Projectile p = new Projectile(initVec.add(8), angle, 20, 8, Sprites.bullet1Red);
 			ObjectHandler.addBullet(p);
 		}
 		
 		if (OnGUI.abillityBarActive == 2)
 		{
 			cooldown = 30;
-			Projectile p = new Projectile(initVec, angle, 20, 16, Sprites.bullet2White);
+			Projectile p = new Projectile(initVec.add(8), angle, 20, 16, Sprites.bullet2White);
 			ObjectHandler.addBullet(p);
 		}
 		
 		if (OnGUI.abillityBarActive == 3)
 		{
 			cooldown = 60;
-			Projectile p = new Projectile(initVec, angle, 20, 12, Sprites.bullet3Orange);
+			Projectile p = new Projectile(initVec.add(8), angle, 20, 12, Sprites.bullet3Orange);
 			ObjectHandler.addBullet(p);
 		}
 		
@@ -198,7 +195,7 @@ public class Player extends GameObject
 	public void render(Graphics g)
 	{
 		g.setColor(Color.WHITE);
-		g.drawString(this.name, (int)vec.getX(), (int)vec.getY());
+		g.drawString(this.name, (int)vec.getX() - 8, (int)vec.getY() - 5);
 		g.drawImage(Sprites.ship1, (int)vec.getX(), (int)vec.getY(), null);
 	}
 

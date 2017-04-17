@@ -1,26 +1,30 @@
-package GameEngine.SuperEntities;
-
+package GameEngine.GameDesign;
 
 import java.awt.Rectangle;
 import GameEngine.Framework.Game;
 import GameEngine.Framework.ObjectHandler;
+import GameEngine.SuperEntities.Block;
+import GameEngine.SuperEntities.Player;
+import GameEngine.SuperEntities.Sprites;
+import GameEngine.SuperEntities.Texture;
 import GameEngine.Util.Vector2D;
 
 public class Level 
 {
-	public boolean changeLevel = true;
-	private int level = 1;
+	public static boolean changeLevel = true;
+	private static int level = 0;
 	
 	public Level() 
 	{
+		
 	}
 	
-	public int getLevel() {
+	public static int getLevel() {
 		return level;
 	}
 
-	public void setLevel(int level) {
-		this.level = level;
+	public static void setLevel(int newLevel) {
+		level = newLevel;
 	}
 	
 	public void update()
