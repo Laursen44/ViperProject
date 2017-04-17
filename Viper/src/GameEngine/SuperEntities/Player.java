@@ -1,4 +1,4 @@
-package Entities;
+package GameEngine.SuperEntities;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -6,10 +6,6 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import GameEngine.Framework.ObjectHandler;
-import GameEngine.SuperEntities.Block;
-import GameEngine.SuperEntities.GameObject;
-import GameEngine.SuperEntities.Projectile;
-import GameEngine.SuperEntities.Sprites;
 import GameEngine.Util.KeyboardManager;
 import GameEngine.Util.MouseManager;
 import GameEngine.Util.Vector2D;
@@ -21,15 +17,11 @@ public class Player extends GameObject
 
 	private static final long serialVersionUID = 1L;
 	Graphics g;
-	private int damage;
 	private int health = 100;
 	private String name;
 	int cooldownTimer = 30;
-	int cooldown = 30;
-	public Rectangle collisionRectTop;
-	public Rectangle collisionRectBot;
-	public Rectangle collisionRectLeft;
-	public Rectangle collisionRectRight;
+	int cooldown;
+	public Rectangle collisionRectTop, collisionRectBot, collisionRectLeft, collisionRectRight;
 	public int pW = 32, pH = 32;
 	private boolean updateBounds = false, Shoot = false;
 	int pXX, pYY;
@@ -60,8 +52,27 @@ public class Player extends GameObject
 		float adjacent = aimX - initVec.getX();
 		float angle = (float)Math.atan2(opposite, adjacent);
 		
-		Projectile p = new BasicBullet(initVec, angle);
-		ObjectHandler.addBullet(p);
+		if (OnGUI.abillityBarActive == 1)
+		{
+			cooldown = 10;
+			Projectile p = new Projectile(initVec, angle, 20, 8, Sprites.bullet1Red);
+			ObjectHandler.addBullet(p);
+		}
+		
+		if (OnGUI.abillityBarActive == 2)
+		{
+			cooldown = 30;
+			Projectile p = new Projectile(initVec, angle, 20, 16, Sprites.bullet2White);
+			ObjectHandler.addBullet(p);
+		}
+		
+		if (OnGUI.abillityBarActive == 3)
+		{
+			cooldown = 60;
+			Projectile p = new Projectile(initVec, angle, 20, 12, Sprites.bullet3Orange);
+			ObjectHandler.addBullet(p);
+		}
+		
 	}
 	
 	public void checkIfShot()
@@ -189,24 +200,6 @@ public class Player extends GameObject
 		g.setColor(Color.WHITE);
 		g.drawString(this.name, (int)vec.getX(), (int)vec.getY());
 		g.drawImage(Sprites.ship1, (int)vec.getX(), (int)vec.getY(), null);
-		
-		// healthbar
-		g.setColor(Color.RED);
-		g.fillRect(30, 30, 200, 50);
-		g.setColor(Color.GREEN);
-		g.fillRect(30, 30, health*2, 50);
-		g.setColor(Color.BLACK);
-		g.drawString("HEALTH", 100, 60);
-	}
-	
-	public int getDamage() 
-	{
-		return damage;
-	}
-
-	public void setDamage(int damage) 
-	{
-		this.damage = damage;
 	}
 
 	public int getHealth() 

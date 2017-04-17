@@ -3,7 +3,6 @@ package GameEngine.SuperEntities;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-import Entities.ID;
 import GameEngine.Util.Vector2D;
 
 public abstract class GameObject extends Rectangle {

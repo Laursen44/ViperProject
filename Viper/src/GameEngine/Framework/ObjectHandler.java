@@ -2,9 +2,7 @@ package GameEngine.Framework;
 
 import java.awt.Graphics;
 import java.util.LinkedList;
-
 import GameEngine.SuperEntities.GameObject;
-import GameEngine.SuperEntities.Level;
 import GameEngine.SuperEntities.OnGUI;
 import GameEngine.SuperEntities.Projectile;
 
@@ -16,9 +14,6 @@ public class ObjectHandler
 	
 	public ObjectHandler()
 	{
-		Level level = new Level();
-		level.loginScreen(level.getLevel());
-		level.level1(level.getLevel());
 		 gui = new OnGUI();
 	}
 	
@@ -35,7 +30,6 @@ public class ObjectHandler
 			Projectile p = bullet.get(i);
 			p.update();
 		}
-		
 		gui.update();
 	}
 	

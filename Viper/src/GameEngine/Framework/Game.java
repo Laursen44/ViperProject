@@ -1,10 +1,9 @@
 package GameEngine.Framework;
 import java.awt.Canvas;
 import java.awt.Graphics;
-import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 
+import GameEngine.SuperEntities.Level;
 import GameEngine.SuperEntities.Sprites;
 import GameEngine.Util.KeyboardManager;
 import GameEngine.Util.MouseManager;
@@ -17,6 +16,7 @@ public class Game extends Canvas implements Runnable
 	private Graphics g;
 	private Thread game;
 	private ObjectHandler handler;
+	private Level level;
 	
 	public static void main(String[] args)
 	{
@@ -27,6 +27,7 @@ public class Game extends Canvas implements Runnable
 	{
 		new Window(WIDTH, HEIGHT, "Viper Project", this);
 		handler = new ObjectHandler();
+		level = new Level();
 		KeyboardManager keyboard = new KeyboardManager();
 		addKeyListener(keyboard);
 		MouseManager mouse = new MouseManager();
@@ -110,7 +111,7 @@ public class Game extends Canvas implements Runnable
 	{
 		handler.update();
 		KeyboardManager.update();
-		
+		level.update();
 	}
 	
 

@@ -1,11 +1,10 @@
 package GameEngine.SuperEntities;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
-import Entities.ID;
 import GameEngine.Framework.ObjectHandler;
 import GameEngine.Util.Vector2D;
 
@@ -16,39 +15,49 @@ public class Projectile extends GameObject {
 	protected int width = 16, height = 16;
 	protected double angle;
 	protected int speed;
+	protected int damage;
 	protected int pXX, pYY;
 	protected Vector2D posVec;
 	protected Vector2D shootVec;
-	public Rectangle collisiosRect;
+	protected Rectangle collisionRect;
+	protected BufferedImage sprite;
 	protected boolean updateBounds = false;
 	
-	public Projectile(Vector2D vec, double dir) 
+	public Projectile(Vector2D vec, double dir, int damage, int speed, BufferedImage sprite) 
 	{
+		this.damage = damage;
+		this.speed = speed;
+		this.sprite = sprite;
 		posVec = vec;
 		angle = dir;
-		id = ID.PROJECTTILE;
+		shootVec = new Vector2D(Math.cos(angle), Math.sin(angle));
+		shootVec = shootVec.mul(speed);
 		int pX = (int)vec.getX();
 		int pY = (int)vec.getY();
-		collisiosRect = new Rectangle(pX, pY, width, height);
-		collisiosRect.setBounds(collisiosRect);
+		collisionRect = new Rectangle(pX, pY, width, height);
+		collisionRect.setBounds(collisionRect);
 		updateBounds = true;
 	}
 	
 	public void move()
 	{
-		
+		posVec = posVec.add(shootVec);
 	}
 	
+	public Rectangle getCollisiosRect() {
+		return collisionRect;
+	}
+
 	public Rectangle updateBounds()
 	{
 		pXX = (int)posVec.getX();
 		pYY = (int)posVec.getY();
-		collisiosRect = new Rectangle(pXX, pYY, width, height);
-		collisiosRect.setBounds(collisiosRect);
-		return collisiosRect;
+		collisionRect = new Rectangle(pXX, pYY, width, height);
+		collisionRect.setBounds(collisionRect);
+		return collisionRect;
 	}
 	
-	public void removeIfCollision()
+	public void removeIfCollideBlock()
 	{
 		LinkedList<Rectangle> blocks = Block.getLinkedList();
 		LinkedList<Projectile> bullets = ObjectHandler.getBulletList();
@@ -57,7 +66,7 @@ public class Projectile extends GameObject {
 		{
 			for (int i = 0; i < bullets.size(); i++){
 				
-				if (bullets.get(i).collisiosRect.getBounds().intersects(block.getBounds()))
+				if (bullets.get(i).collisionRect.getBounds().intersects(block.getBounds()))
 				{
 					ObjectHandler.removeBullet(bullets.get(i));
 				}
@@ -71,13 +80,13 @@ public class Projectile extends GameObject {
 		if (updateBounds)
 		{
 			updateBounds();
-			removeIfCollision();
+			removeIfCollideBlock();
 		}
 	}
 
 	public void render(Graphics g) 
 	{
-		
+		g.drawImage(sprite, (int)posVec.getX(), (int)posVec.getY(), null);
 	}
 
 }

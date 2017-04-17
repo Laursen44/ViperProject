@@ -1,24 +1,21 @@
 package GameEngine.SuperEntities;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.LinkedList;
-
-import Entities.ID;
 
 public class Block extends GameObject 
 {
 	private static final long serialVersionUID = 1L;
-	
 	public Rectangle rect;
+	protected BufferedImage sprite;
 	public static LinkedList<Rectangle> blockBounds = new LinkedList<Rectangle>();
 
-	public Block(Rectangle rect) 
+	public Block(Rectangle rect, BufferedImage sprite) 
 	{
 		this.rect = rect;
+		this.sprite = sprite;
 		addStaticCollision(rect);
 	}
 	
@@ -29,6 +26,7 @@ public class Block extends GameObject
 
 	public void render(Graphics g) 
 	{
+		g.drawImage(sprite, (int)rect.getX(), (int)rect.getY(), null);
 	}
 
 	public static LinkedList<Rectangle> getLinkedList() {
