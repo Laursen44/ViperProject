@@ -62,7 +62,7 @@ public class VPDatabase extends VPBase
 	{
 		int pointer = 0;
 		assert(readString(data, pointer, HEADER.length).equals(HEADER));
-		pointer += HEADER.length;
+		pointer += 4;
 		
 		if (readShort(data, pointer) != (VERSION))
 		{
@@ -71,14 +71,15 @@ public class VPDatabase extends VPBase
 		}
 		pointer += 2;
 		
-		byte containerType = readByte(data, pointer++);
+		byte containerType = readByte(data, pointer);
 		assert(containerType == CONTAINER_TYPE);
+		pointer++;
 		
 		VPDatabase result = new VPDatabase("");
 		result.nameLength = readShort(data, pointer);
 		pointer += 2;
 		result.name = readString(data, pointer, result.nameLength).getBytes();
-		pointer += result.nameLength;
+		pointer += 8;
 		
 		result.size = readInt(data, pointer);
 		pointer += 4;
@@ -86,7 +87,7 @@ public class VPDatabase extends VPBase
 		result.objectCount = readShort(data, pointer);
 		pointer += 2;
 		
-		for (int i = 0; i < result.objects.size(); i++)
+		for (int i = 0; i < result.objectCount; i++)
 		{
 			VPObject object = VPObject.Deserialize(data, pointer);
 			result.objects.add(object);

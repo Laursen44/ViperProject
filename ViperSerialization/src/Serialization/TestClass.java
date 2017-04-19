@@ -42,18 +42,18 @@ public class TestClass
 		
 		byte[] data1 = new byte[database.getSize()];
 		database.getBytes(data1, 0);
-		//printBytes(data1);
-		//System.out.println("\n");
+		printBytes(data1);
+		System.out.println("\n");
 		//System.out.println("Object count: " + database.objects.size());
 		database.serializeToFile("test.vpdb");
 		VPDatabase database1;
 		database1 = VPDatabase.DeserializeFromFile("test.vpdb");
 		
-		System.out.println(database1.HEADER.length);
-		System.out.println(database1.size);
+		//System.out.println(database1.HEADER.length);
+		//System.out.println(database1.size);
 		byte[] data2 = new byte[database.getSize()];
 		database1.getBytes(data2, 0);
-		//printBytes(data2);
+		printBytes(data2);
 		//System.out.println("Object count: " + database1.objects.size());
 		
 	}
