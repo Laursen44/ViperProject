@@ -16,7 +16,7 @@ public class VPDatabase extends VPBase
 	public static final short VERSION = 0x0100;
 	public static final byte CONTAINER_TYPE = ContainerType.DATABASE;
 	private short objectCount;
-	public List<VPObject> objects = new ArrayList<VPObject>();
+	public ArrayList<VPObject> objects = new ArrayList<VPObject>();
 
 	private VPDatabase()
 	{

@@ -8,11 +8,11 @@ public class VPObject extends VPBase
 {
 	public static final byte CONTAINER_TYPE = ContainerType.OBJECT;
 	private short fieldCount;
-	public List<VPField> fields = new ArrayList<VPField>();
+	public ArrayList<VPField> fields = new ArrayList<VPField>();
 	private short stringCount;
-	public List<VPString> strings = new ArrayList<VPString>();
+	public ArrayList<VPString> strings = new ArrayList<VPString>();
 	private short arrayCount;
-	public List<VPArray> arrays = new ArrayList<VPArray>(); 
+	public ArrayList<VPArray> arrays = new ArrayList<VPArray>(); 
 	
 	private VPObject()
 	{

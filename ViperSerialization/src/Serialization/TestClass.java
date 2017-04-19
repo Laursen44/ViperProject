@@ -8,7 +8,7 @@ public class TestClass
 	
 	public static void main(String[] args)
 	{
-		int[] data = new int[50000];
+		int[] data = new int[50];
 		for (int i = 0; i < data.length; i++)
 		{
 			data[i] = random.nextInt();
@@ -24,7 +24,9 @@ public class TestClass
 		object.addField(field);
 		
 		database.addObject(object);
+		database.addObject(object);
 		database.serializeToFile("test.vpdb");
+		System.out.println(database.objects.size());
 		
 	}
 }
