@@ -65,12 +65,7 @@ public class Game extends Canvas implements Runnable
 			object.addField(field);
 			
 			database.addObject(object);
-			
-			
-		
-	
-		
-		
+					
 		client.send(database);
 	}
 		
