@@ -8,7 +8,7 @@ public class VPField extends VPBase
 	public byte type;
 	public byte[] data;
 	
-	private VPField()
+	VPField()
 	{
 		
 	}

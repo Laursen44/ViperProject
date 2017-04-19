@@ -7,6 +7,8 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import Serialization.VPDatabase;
+
 public class Client {
 
 	public enum Error
@@ -81,6 +83,13 @@ public class Client {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		
+	}
+	
+	public void send(VPDatabase database)
+	{
+		byte[] data = new byte[database.getSize()];
+		database.getBytes(data,0);
+		send(data);
 	}
 	
 	public Error getErrorCode()

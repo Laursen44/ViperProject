@@ -2,12 +2,17 @@ package GameEngine.Framework;
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.util.Random;
 
 import GameEngine.GameDesign.Level;
 import GameEngine.GameDesign.OnGUI;
 import GameEngine.SuperEntities.Sprites;
 import GameEngine.Util.KeyboardManager;
 import GameEngine.Util.MouseManager;
+import Serialization.VPArray;
+import Serialization.VPDatabase;
+import Serialization.VPField;
+import Serialization.VPObject;
 
 public class Game extends Canvas implements Runnable
 {
@@ -36,6 +41,33 @@ public class Game extends Canvas implements Runnable
 		MouseManager mouse = new MouseManager();
 		addMouseListener(mouse);
 		addMouseMotionListener(mouse);
+		
+		//Connection to server
+		Client client = new Client("localhost", 8586);
+		client.connect();
+		
+		Random random = new Random();
+		
+		
+			int[] data = new int[50];
+			for (int i = 0; i < data.length; i++)
+			{
+				data[i] = random.nextInt();
+			}
+			
+			VPDatabase database = new VPDatabase("database");
+			
+			VPArray array = VPArray.Integer("numbers", data);
+			VPField field = VPField.Integer("int", 8);
+			
+			VPObject object = new VPObject("entity");
+			object.addArray(array);
+			object.addField(field);
+			
+			database.addObject(object);
+					
+		client.send(database);
+		System.out.println(database.objects.size());
 	}
 		
 	public synchronized void start()
