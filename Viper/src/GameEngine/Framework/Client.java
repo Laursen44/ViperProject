@@ -29,6 +29,7 @@ public class Client {
 			errorCode = Error.INVALID_HOST;
 			return;
 		}
+		
 		ipAddress = parts[0];
 		try{
 			port = Integer.parseInt(parts[1]);

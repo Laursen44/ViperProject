@@ -3,11 +3,15 @@ package GameEngine.Util;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import GameEngine.GameDesign.GUITextBox;
+import GameEngine.GameDesign.OnGUI;
+
 public class KeyboardManager implements KeyListener 
 {
 
 	public static boolean[] keys = new boolean[160];
-	public static boolean up, down, left, right, key1, key2, key3;
+	public static int intkey;
+	public static boolean up, down, left, right, key1, key2, key3, backspace;
 
 	public static void update()
 	{
@@ -18,11 +22,14 @@ public class KeyboardManager implements KeyListener
 		key1 = keys[KeyEvent.VK_1];
 		key2 = keys[KeyEvent.VK_2];
 		key3 = keys[KeyEvent.VK_3];
+		backspace = keys[KeyEvent.VK_BACK_SPACE];
 	}
 
 	public void keyPressed(KeyEvent e)
 	{
 		keys[e.getKeyCode()] = true;
+		intkey = e.getKeyCode();
+		
 	}
 	
 	public void keyReleased(KeyEvent e)
@@ -30,8 +37,30 @@ public class KeyboardManager implements KeyListener
 		keys[e.getKeyCode()] = false;
 	}
 
-	public void keyTyped(KeyEvent arg0) 
+	public void keyTyped(KeyEvent e) 
 	{
-
+		updateUsername(OnGUI.usernameActive, e);
+	}
+	
+	public void updateUsername(boolean active, KeyEvent e)
+	{
+			if(!active) return;
+			{
+				{
+					if (intkey >= 65 && intkey <= 122)
+					{
+						GUITextBox.username = GUITextBox.username + e.getKeyChar();
+					}
+				
+					if(backspace)
+					{
+						if(GUITextBox.username.length() > 0)
+						{
+							GUITextBox.username = GUITextBox.username.substring(0, GUITextBox.username.length()-1);
+						}
+				}
+			}
+	
+		}
 	}
 }

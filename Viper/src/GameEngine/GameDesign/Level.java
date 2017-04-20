@@ -54,7 +54,7 @@ public class Level
 		OnGUI.loginScreen = false;
 		OnGUI.healthBar = true;
 		OnGUI.abillityBar = true;
-		ObjectHandler.addObject(new Player("Thomas", new Vector2D(200, 200)));	
+		ObjectHandler.addObject(new Player(new Vector2D(200, 200)));	
 	}
 	
 	private void addBackgroundTextures()

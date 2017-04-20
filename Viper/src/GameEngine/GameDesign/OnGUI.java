@@ -1,7 +1,6 @@
 package GameEngine.GameDesign;
 
 import java.awt.Graphics;
-
 import GameEngine.Framework.Game;
 import GameEngine.SuperEntities.Sprites;
 import GameEngine.Util.KeyboardManager;
@@ -14,15 +13,22 @@ public class OnGUI
 	public static boolean healthBar = false; 
 	public static boolean abillityBar = false;
 	public static boolean loginScreen = false;
+	public static boolean usernameActive = false;
 	public int healthX = 50, healthY = 50, healthBarWidth = 96;
 	public int abillityX = Game.WIDTH/2 - ((50*2+16*2)/2), abillityY = Game.HEIGHT - 100, abillityOffset = 50;
-	public int loginX = Game.WIDTH/2 - 48, loginY = 200, createX = loginX, createY = loginY + 75, playX = loginX, playY = createY + 75;
+	public static int usernameWidth = 300, usernameHeight = 30;
+	public static int loginX = Game.WIDTH/2 - 48, loginY = 200, createX = loginX, createY = loginY + 75, 
+			playX = loginX, playY = createY + 75, usernameX = Game.WIDTH/2 - usernameWidth/2, usernameY = playY +50;
 	public static int abillityBarActive = 1;
-	
+	public KeyboardManager keyboard;
 	private boolean createHigh = false, loginHigh = false, playHigh = false;
+	GUITextBox usernameBox;
+	public static String errorMessage = "";
 	
 	public OnGUI()
 	{
+		keyboard = new KeyboardManager();
+		usernameBox = new GUITextBox(usernameX, usernameY, usernameWidth, usernameHeight);
 	}
 	
 	public void update() 
@@ -116,6 +122,8 @@ public class OnGUI
 		{
 			g.drawImage(Sprites.playhigh, playX, playY, null);
 		}
+		
+		usernameBox.render(g);
 	}
 	
 	public void loginScreenLogic(boolean active)
@@ -149,11 +157,23 @@ public class OnGUI
 			playHigh = true;
 			if(MouseManager.mouseB == 1)
 			{
-				Level.setLevel(1);
-				Level.changeLevel = true;
+				if (GUITextBox.username.length() > 0)
+				{
+					Level.setLevel(1);
+					Level.changeLevel = true;
+				}
+				else errorMessage = "Please enter a username";
+				
 			}
 		}
 		else playHigh = false;
-
+		if(MouseManager.getX() <= usernameX + usernameWidth && MouseManager.getX() >= usernameX && MouseManager.getY() <= usernameY + 
+				usernameHeight && MouseManager.getY() >= usernameY && MouseManager.mouseB == 1)
+		{
+			usernameActive = true;
+		}
 	}
+
 }
+
+

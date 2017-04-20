@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 import GameEngine.Framework.ObjectHandler;
+import GameEngine.GameDesign.GUITextBox;
 import GameEngine.GameDesign.OnGUI;
 import GameEngine.Util.KeyboardManager;
 import GameEngine.Util.MouseManager;
@@ -15,7 +16,7 @@ public class Player extends GameObject
 	private static final long serialVersionUID = 1L;
 	Graphics g;
 	private int health = 100;
-	private String name;
+	private String name = GUITextBox.username;
 	int cooldownTimer = 30;
 	int cooldown;
 	public Rectangle collisionRectTop, collisionRectBot, collisionRectLeft, collisionRectRight;
@@ -25,10 +26,9 @@ public class Player extends GameObject
 	int hDir, vDir;
 	ObjectHandler handler;
 	
-	public Player(String name, Vector2D vec)
+	public Player(Vector2D vec)
 	{
 		this.vec = vec;
-		this.name = name;
 		int pX = (int)vec.getX();
 		int pY = (int)vec.getY();
 		collisionRectTop = new Rectangle(pX + 6, pY, pW - 12, pH - 30);
