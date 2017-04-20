@@ -7,10 +7,15 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import GameEngine.Util.BinaryWriter;
 import Serialization.VPDatabase;
 
 public class Client {
 
+	private final static byte[] PACKET_HEADER = new byte[] {0x40, 0x40 };
+	private final static byte PACKET_TYPE_CONNECT = 0x01;
+	
+	
 	public enum Error
 	{
 		NONE, INVALID_HOST,SOCKET_EXCEPTION
@@ -69,8 +74,10 @@ public class Client {
 	}
 			private void sendConnectionPacket()
 			{
-			byte[] data = "ConnectionPacket".getBytes();
-			send(data);
+				BinaryWriter writer = new BinaryWriter();
+				writer.write(PACKET_HEADER);
+				writer.write(PACKET_TYPE_CONNECT);
+			send(writer.getBuffer());
 		}
 	
 	

@@ -44,7 +44,10 @@ public class Game extends Canvas implements Runnable
 		
 		//Connection to server
 		Client client = new Client("localhost", 8586);
-		client.connect();
+		if (!client.connect())
+		{
+			// If not connect
+		}
 		
 		Random random = new Random();
 		
