@@ -4,7 +4,7 @@ import java.awt.Graphics;
 
 public class GUITextBox 
 {
-	
+	public static String Thomas = "";
 	public static String username = "";
 	public int x, y, width, height;
 	
