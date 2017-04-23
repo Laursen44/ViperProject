@@ -1,19 +1,22 @@
 package GameEngine.GameDesign;
 
 import java.awt.Graphics;
+
 import GameEngine.Framework.Game;
 import GameEngine.SuperEntities.Sprites;
 import GameEngine.Util.KeyboardManager;
 import GameEngine.Util.MouseManager;
+import Serialization.VPDatabase;
+import Serialization.VPObject;
 
 
 public class OnGUI
 {
-	
 	public static boolean healthBar = false; 
 	public static boolean abillityBar = false;
 	public static boolean loginScreen = false;
 	public static boolean usernameActive = false;
+	public static boolean connectionNotSent = true;
 	public int healthX = 50, healthY = 50, healthBarWidth = 96;
 	public int abillityX = Game.WIDTH/2 - ((50*2+16*2)/2), abillityY = Game.HEIGHT - 100, abillityOffset = 50;
 	public static int usernameWidth = 300, usernameHeight = 30;
@@ -27,6 +30,7 @@ public class OnGUI
 	
 	public OnGUI()
 	{
+		
 		keyboard = new KeyboardManager();
 		usernameBox = new GUITextBox(usernameX, usernameY, usernameWidth, usernameHeight);
 	}
@@ -159,6 +163,16 @@ public class OnGUI
 			{
 				if (GUITextBox.username.length() > 0)
 				{
+					if(connectionNotSent)
+					{
+					VPDatabase database = new VPDatabase("Connection");
+					VPObject object = new VPObject(GUITextBox.username);
+					database.addObject(object);
+					Game.client.send(database);
+					connectionNotSent = false;
+					}
+					
+					usernameActive = false;
 					Level.setLevel(1);
 					Level.changeLevel = true;
 				}

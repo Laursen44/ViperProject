@@ -62,7 +62,7 @@ public class VPDatabase extends VPBase
 	{
 		int pointer = 0;
 		assert(readString(data, pointer, HEADER.length).equals(HEADER));
-		pointer += 4;
+		pointer += HEADER.length;
 		
 		if (readShort(data, pointer) != (VERSION))
 		{
@@ -79,7 +79,7 @@ public class VPDatabase extends VPBase
 		result.nameLength = readShort(data, pointer);
 		pointer += 2;
 		result.name = readString(data, pointer, result.nameLength).getBytes();
-		pointer += 8;
+		pointer += result.nameLength;
 		
 		result.size = readInt(data, pointer);
 		pointer += 4;

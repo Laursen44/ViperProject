@@ -4,31 +4,35 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.LinkedList;
+
+import GameEngine.Framework.Game;
 import GameEngine.Framework.ObjectHandler;
 import GameEngine.GameDesign.GUITextBox;
 import GameEngine.GameDesign.OnGUI;
 import GameEngine.Util.KeyboardManager;
 import GameEngine.Util.MouseManager;
 import GameEngine.Util.Vector2D;
+import Serialization.VPDatabase;
+import Serialization.VPField;
+import Serialization.VPObject;
 
 public class Player extends GameObject
 {
 	private static final long serialVersionUID = 1L;
 	Graphics g;
+	public static Vector2D vec;
 	private int health = 100;
 	private String name = GUITextBox.username;
-	int cooldownTimer = 30;
-	int cooldown;
-	public Rectangle collisionRectTop, collisionRectBot, collisionRectLeft, collisionRectRight;
-	public int pW = 32, pH = 32;
+	int cooldownTimer = 30, cooldown;
+	public static Rectangle collisionRectTop, collisionRectBot, collisionRectLeft, collisionRectRight;
+	public int pW = 32, pH = 32, x, y;
 	private boolean updateBounds = false, Shoot = false;
-	int pXX, pYY;
-	int hDir, vDir;
+	int pXX, pYY, hDir, vDir;
 	ObjectHandler handler;
 	
 	public Player(Vector2D vec)
 	{
-		this.vec = vec;
+		Player.vec = vec;
 		int pX = (int)vec.getX();
 		int pY = (int)vec.getY();
 		collisionRectTop = new Rectangle(pX + 6, pY, pW - 12, pH - 30);
@@ -83,10 +87,47 @@ public class Player extends GameObject
 	
 	public void move()
 	{
-		if (KeyboardManager.up && !checkCollisionTop()) 	 vec = vec.add(new Vector2D (  0 , -1 * 5 ));
-		if (KeyboardManager.down && !checkCollisionBot())	 vec = vec.add(new Vector2D ( 0 , 1 * 5 ));
-		if (KeyboardManager.left && !checkCollisionLeft())	 vec = vec.add(new Vector2D ( - 1 * 5 , 0 ));
-		if (KeyboardManager.right && !checkCollisionRight()) vec = vec.add(new Vector2D (  1 * 5 , 0 ));
+		VPDatabase database = new VPDatabase("Update");
+		VPObject object = new VPObject(GUITextBox.username);
+		VPField xcord = VPField.Integer("x", 0);
+		VPField ycord = VPField.Integer("y", 0);
+		
+		if (KeyboardManager.up && !checkCollisionTop())
+		{
+			y = -5;
+			ycord = VPField.Integer("y", y);
+		} 	 
+			
+		if (KeyboardManager.down && !checkCollisionBot())
+		{
+			y = 5;
+			ycord = VPField.Integer("y", y);
+		}	 
+		
+		if (KeyboardManager.left && !checkCollisionLeft())
+		{
+			x = -5;
+			xcord = VPField.Integer("x", x);
+		}
+			
+		if (KeyboardManager.right && !checkCollisionRight())
+		{
+			x = 5;
+			xcord = VPField.Integer("x", x);
+		}
+		
+		
+		if(xcord != null && ycord != null)
+		{
+			object.addField(xcord);
+			object.addField(ycord);
+			
+			database.addObject(object);
+			
+			Game.client.send(database);
+			x = 0;
+			y = 0;
+		}
 	}
 	
 	

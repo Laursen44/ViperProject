@@ -3,6 +3,7 @@ package GameEngine.SuperEntities;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import GameEngine.Framework.ObjectHandler;
@@ -59,7 +60,7 @@ public class Projectile extends GameObject {
 	public void removeIfCollideBlock()
 	{
 		LinkedList<Rectangle> blocks = Block.getLinkedList();
-		LinkedList<Projectile> bullets = ObjectHandler.getBulletList();
+		ArrayList<Projectile> bullets = ObjectHandler.getBulletList();
 		
 		for (Rectangle block : blocks)
 		{

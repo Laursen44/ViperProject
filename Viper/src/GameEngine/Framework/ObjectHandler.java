@@ -1,14 +1,16 @@
 package GameEngine.Framework;
 
 import java.awt.Graphics;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import GameEngine.SuperEntities.GameObject;
+import GameEngine.SuperEntities.NetPlayer;
 import GameEngine.SuperEntities.Projectile;
-
+ 
 public class ObjectHandler 
 {
-	public static LinkedList<GameObject> object = new LinkedList<GameObject>();
-	public static LinkedList<Projectile> bullet = new LinkedList<Projectile>();
+	public static ArrayList<GameObject> object = new ArrayList<GameObject>();
+	public static ArrayList<Projectile> bullet = new ArrayList<Projectile>();
+	public static ArrayList<NetPlayer> netPlayers = new ArrayList<NetPlayer>();
 	
 	public ObjectHandler()
 	{
@@ -28,6 +30,12 @@ public class ObjectHandler
 			Projectile p = bullet.get(i);
 			p.update();
 		}
+		
+		for(int i = 0; i < netPlayers.size(); i++)
+		{
+			NetPlayer p = netPlayers.get(i);
+			p.update();
+		}
 	}
 	
 	public void render(Graphics g)
@@ -41,6 +49,12 @@ public class ObjectHandler
 		for(int i = 0; i < bullet.size(); i++)
 		{
 			Projectile p = bullet.get(i);
+			p.render(g);
+		}
+		
+		for(int i = 0; i < netPlayers.size(); i++)
+		{
+			NetPlayer p = netPlayers.get(i);
 			p.render(g);
 		}
 	}
@@ -65,11 +79,11 @@ public class ObjectHandler
 		bullet.remove(p);
 	}
 	
-	public static LinkedList<GameObject> getObjectList() {
+	public static ArrayList<GameObject> getObjectList() {
 		return object;
 	}
 	
-	public static LinkedList<Projectile> getBulletList() {
+	public static ArrayList<Projectile> getBulletList() {
 		return bullet;
 	}
 }

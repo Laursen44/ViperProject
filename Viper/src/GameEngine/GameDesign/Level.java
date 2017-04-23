@@ -12,7 +12,7 @@ import GameEngine.Util.Vector2D;
 public class Level 
 {
 	public static boolean changeLevel = true;
-	private static int level = 0;
+	public static int level = 0;
 	
 	public Level() 
 	{
@@ -54,7 +54,6 @@ public class Level
 		OnGUI.loginScreen = false;
 		OnGUI.healthBar = true;
 		OnGUI.abillityBar = true;
-		ObjectHandler.addObject(new Player(new Vector2D(200, 200)));	
 	}
 	
 	private void addBackgroundTextures()

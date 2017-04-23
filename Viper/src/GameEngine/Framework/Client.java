@@ -6,25 +6,33 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-
-import GameEngine.Util.BinaryWriter;
+import GameEngine.GameDesign.GUITextBox;
+import GameEngine.GameDesign.Level;
+import GameEngine.SuperEntities.NetPlayer;
+import GameEngine.SuperEntities.Player;
+import GameEngine.Util.Vector2D;
 import Serialization.VPDatabase;
+import Serialization.VPField;
+import Serialization.VPObject;
 
 public class Client {
-
-	private final static byte[] PACKET_HEADER = new byte[] {0x40, 0x40 };
-	private final static byte PACKET_TYPE_CONNECT = 0x01;
-	
 	
 	public enum Error
 	{
 		NONE, INVALID_HOST,SOCKET_EXCEPTION
 	}
+	
 	private int port;
 	private String ipAddress;
 	private InetAddress serverAddress;
 	private Error errorCode = Error.NONE;
 	private DatagramSocket socket;
+	private final int MAX_PACKET_SIZE = 1024;
+	private byte[] receivedDataBuffer = new byte [MAX_PACKET_SIZE *10]; 
+	private boolean playerActive = false;
+	private Thread listenThread;
+	private boolean listening = false;
+	public int netplayerX, netplayerY;
 	
 	public Client(String host) // host parameter eg. 192.168.1.1:5000
 	{
@@ -43,7 +51,6 @@ public class Client {
 			errorCode = Error.INVALID_HOST;
 			return;
 		}
-		
 	}
 	
 	public Client (String host, int port)
@@ -67,23 +74,56 @@ public class Client {
 			e.printStackTrace();
 			errorCode = Error.SOCKET_EXCEPTION;
 			return false;
-		}
-		sendConnectionPacket();
-		//Wait for server reply
+		}	
 		return true;
 	}
-			private void sendConnectionPacket()
-			{
-				BinaryWriter writer = new BinaryWriter();
-				writer.write(PACKET_HEADER);
-				writer.write(PACKET_TYPE_CONNECT);
-			send(writer.getBuffer());
-		}
 	
+	public void start()
+	{
+		listening = true;
+		listenThread= new Thread (() -> listen(), "ViperProjectClient-ListenThread" );
+		listenThread.start();
+		System.out.println("client is Listening");
+	}
+	
+	public void listen()
+	{			
+		long last = System.nanoTime();
+		double targetlooptime = 60;
+		double optimalTime = 1000000000.0 / targetlooptime;  
+		double delta = 0;
+		while (listening)
+		{
+			long now = System.nanoTime();
+			delta += (now - last) / optimalTime;
+			last = now;
+			while(delta >= 1)
+			{
+				while (listening)
+				{
+					DatagramPacket  pack = new DatagramPacket(receivedDataBuffer, MAX_PACKET_SIZE);
+					try
+					{
+						socket.receive(pack);
+					}
+					catch (IOException e) 
+					{
+						e.printStackTrace();
+					}	
+					process(pack);
+				}
+			delta--;
+		}
+			
+	}
+		
+	}
 	
 	public void send(byte[] data)
 	{
-		assert(socket.isConnected());
+		if(socket.isConnected())
+		{
+		}
 		DatagramPacket pack = new DatagramPacket(data, data.length, serverAddress, port);
 
 		try {
@@ -100,8 +140,73 @@ public class Client {
 		send(data);
 	}
 	
+	public void process(DatagramPacket pack)
+	{
+		byte[] data = pack.getData();
+		if (new String(data,0,4).equals("VPDB"))
+		{
+			System.out.println("recieved VPDB from server!");
+			VPDatabase database = VPDatabase.Deserialize(data);
+			update(database);
+		}
+	}
+	
+	public void update(VPDatabase database)
+	{
+		if (Level.level == 0) return;
+			
+		if (database.getName().equals("Server Clients"))
+		{
+			
+			for (VPObject object : database.objects)
+			{
+				if (object.getName().equals(GUITextBox.username))
+				{
+					//make or update player!
+					if(!playerActive)
+					{
+						int x = 0, y = 0;
+						for (VPField field : object.fields)
+						{
+							if(field.getName().equals("x")) x = field.getInt();
+							if(field.getName().equals("y")) y = field.getInt();
+						}
+						ObjectHandler.addObject(new Player(new Vector2D(x, y)));
+						playerActive = true;
+					}
+					else 
+					{
+						int x = 0, y = 0;
+						for (VPField field : object.fields)
+						{
+							if(field.getName().equals("x")) x = field.getInt();
+							if(field.getName().equals("y")) y = field.getInt();
+						}
+						
+						Player.vec = Player.vec.add(new Vector2D(x,0));
+						Player.vec = Player.vec.add(new Vector2D(0,y));
+					}
+					
+				}
+				
+				if (!object.getName().equals(GUITextBox.username))
+				{
+					// make or update net-player!
+					
+					for(int i = 0; i < ObjectHandler.netPlayers.size(); i++)
+					{
+						NetPlayer p = ObjectHandler.netPlayers.get(i);
+						p.update();
+					}
+				}
+
+			}
+		}
+	}
+	
 	public Error getErrorCode()
 	{
 		return errorCode;
 	}
+
 }

@@ -29,7 +29,7 @@ public class KeyboardManager implements KeyListener
 	{
 		keys[e.getKeyCode()] = true;
 		intkey = e.getKeyCode();
-		
+		updateUsername(OnGUI.usernameActive, e);
 	}
 	
 	public void keyReleased(KeyEvent e)
@@ -39,7 +39,7 @@ public class KeyboardManager implements KeyListener
 
 	public void keyTyped(KeyEvent e) 
 	{
-		updateUsername(OnGUI.usernameActive, e);
+		
 	}
 	
 	public void updateUsername(boolean active, KeyEvent e)

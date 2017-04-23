@@ -8,6 +8,7 @@ public class VPString extends VPBase
 	public static final byte CONTAINER_TYPE = ContainerType.STRING;
 	public int count = 0;
 	public char[] characters;
+	public String stringResult;
 	
 	private VPString()
 	{
@@ -16,7 +17,11 @@ public class VPString extends VPBase
 	
 	public String getString() 
 	{
-		return new String(characters);
+		for(int i = 0; i < characters.length; i++)
+		{
+			stringResult += characters[i];
+		}
+		return new String(stringResult);
 	}
 	
 	private void updateSize()
