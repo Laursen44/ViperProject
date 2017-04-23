@@ -30,12 +30,6 @@ public class ObjectHandler
 			Projectile p = bullet.get(i);
 			p.update();
 		}
-		
-		for(int i = 0; i < netPlayers.size(); i++)
-		{
-			NetPlayer p = netPlayers.get(i);
-			p.update();
-		}
 	}
 	
 	public void render(Graphics g)
