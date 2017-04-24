@@ -11,9 +11,11 @@ import GameEngine.GameDesign.Level;
 import GameEngine.SuperEntities.NetPlayer;
 import GameEngine.SuperEntities.Player;
 import GameEngine.Util.Vector2D;
+import Serialization.Type;
 import Serialization.VPDatabase;
 import Serialization.VPField;
 import Serialization.VPObject;
+import Serialization.VPString;
 
 public class Client {
 	
@@ -138,6 +140,7 @@ public class Client {
 		byte[] data = new byte[database.getSize()];
 		database.getBytes(data,0);
 		send(data);
+		
 	}
 	
 	public void process(DatagramPacket pack)
@@ -147,6 +150,7 @@ public class Client {
 		{
 			System.out.println("recieved VPDB from server!");
 			VPDatabase database = VPDatabase.Deserialize(data);
+			//dump(database);
 			update(database);
 		}
 	}
@@ -173,8 +177,7 @@ public class Client {
 						}
 						ObjectHandler.addObject(new Player(new Vector2D(x, y)));
 						playerActive = true;
-					}
-					else 
+					}else 
 					{
 						int x = 0, y = 0;
 						for (VPField field : object.fields)
@@ -182,9 +185,9 @@ public class Client {
 							if(field.getName().equals("x")) x = field.getInt();
 							if(field.getName().equals("y")) y = field.getInt();
 						}
-						
-						Player.vec = Player.vec.add(new Vector2D(x,0));
-						Player.vec = Player.vec.add(new Vector2D(0,y));
+						System.out.println("updated player");
+						Player.vec = new Vector2D(x,y);
+						//Player.vec = Player.vec.add(new Vector2D(0,y));
 					}
 					
 				}
@@ -231,4 +234,30 @@ public class Client {
 		return errorCode;
 	}
 
+	private void dump(VPDatabase database)
+	{
+		System.out.println("----------------------------------");
+		System.out.println("VPDatabase");
+		System.out.println("----------------------------------");
+		System.out.println("Name: " + database.getName());
+		System.out.println("Size: " + database.getSize());
+		System.out.println("Object count: " + database.objects.size());
+		System.out.println();
+		for(VPObject object : database.objects)
+		{
+			System.out.println("\tObject:");
+			System.out.println("\tName: " + object.getName());
+			System.out.println("\tSize: " +object.getSize());
+			System.out.println("\tField Count: " + object.fields.size());
+			for (VPField field : object.fields)
+			{
+				System.out.println("\t\tField: ");
+				System.out.println("\t\tName: " + field.getName());
+				System.out.println("\t\tSize: " + field.getSize());
+				System.out.println("\t\tSize: " + field.getInt());
+		System.out.println("---------------------------------");
+		
+			}
+		}
+	}
 }

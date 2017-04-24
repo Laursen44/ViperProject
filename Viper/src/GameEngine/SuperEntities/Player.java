@@ -100,7 +100,7 @@ public class Player extends GameObject
 			
 		if (KeyboardManager.down && !checkCollisionBot())
 		{
-			y = 5;
+			y = +5;
 			ycord = VPField.Integer("y", y);
 		}	 
 		
@@ -112,7 +112,7 @@ public class Player extends GameObject
 			
 		if (KeyboardManager.right && !checkCollisionRight())
 		{
-			x = 5;
+			x = +5;
 			xcord = VPField.Integer("x", x);
 		}
 		

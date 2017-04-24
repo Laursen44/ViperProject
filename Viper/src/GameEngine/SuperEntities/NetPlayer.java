@@ -19,8 +19,7 @@ public class NetPlayer extends GameObject
 
 	public void update(int x, int y) 
 	{
-		this.vec = vec.add(new Vector2D(x, 0));
-		this.vec = vec.add(new Vector2D(0, y));
+		this.vec = new Vector2D(x, y);
 	}
 
 
