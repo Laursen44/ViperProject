@@ -73,6 +73,16 @@ public class ObjectHandler
 		bullet.remove(p);
 	}
 	
+	public static void addNetPlayer(NetPlayer p)
+	{
+		netPlayers.add(p);
+	}
+	
+	public static void removeNetPlayer(NetPlayer p)
+	{
+		netPlayers.remove(p);
+	}
+	
 	public static ArrayList<GameObject> getObjectList() {
 		return object;
 	}

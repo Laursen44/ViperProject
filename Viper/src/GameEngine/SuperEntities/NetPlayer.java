@@ -7,6 +7,7 @@ import GameEngine.Util.Vector2D;
 
 public class NetPlayer extends GameObject
 {
+	private static final long serialVersionUID = 1L;
 	public String username = "";
 	public Vector2D vec;
 	
@@ -16,9 +17,10 @@ public class NetPlayer extends GameObject
 		this.vec = vec;
 	}
 
-	public void update() 
+	public void update(int x, int y) 
 	{
-		
+		this.vec = vec.add(new Vector2D(x, 0));
+		this.vec = vec.add(new Vector2D(0, y));
 	}
 
 
@@ -27,6 +29,12 @@ public class NetPlayer extends GameObject
 		g.setColor(Color.WHITE);
 		g.drawString(username, (int)vec.getX() - 8, (int)vec.getY() - 5);
 		g.drawImage(Sprites.ship1, (int)vec.getX(), (int)vec.getY(), null);
+	}
+
+
+	public void update() 
+	{
+		
 	}
 
 }

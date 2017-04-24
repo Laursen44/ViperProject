@@ -192,14 +192,36 @@ public class Client {
 				if (!object.getName().equals(GUITextBox.username))
 				{
 					// make or update net-player!
-					
-					for(int i = 0; i < ObjectHandler.netPlayers.size(); i++)
+					boolean newPlayer = true;
+					for (int i = 0; i < ObjectHandler.netPlayers.size(); i++)
 					{
 						NetPlayer p = ObjectHandler.netPlayers.get(i);
-						p.update();
+		
+						if (object.getName().equals(p.username))
+						{
+							int x = 0, y = 0;
+							for (VPField field : object.fields)
+							{
+								if(field.getName().equals("x")) x = field.getInt();
+								if(field.getName().equals("y")) y = field.getInt();
+							}
+							newPlayer = false;
+							System.out.println("updated Net Player");
+							p.update(x, y);
+						}
+					}
+					if(newPlayer)
+					{
+						int x = 0, y = 0;
+						for (VPField field : object.fields)
+						{
+							if(field.getName().equals("x")) x = field.getInt();
+							if(field.getName().equals("y")) y = field.getInt();
+						}
+						System.out.println("added Net Player");
+						ObjectHandler.addNetPlayer(new NetPlayer(object.getName(), new Vector2D(x,y)));
 					}
 				}
-
 			}
 		}
 	}
