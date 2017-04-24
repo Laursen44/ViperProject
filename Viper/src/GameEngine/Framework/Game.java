@@ -1,20 +1,14 @@
 package GameEngine.Framework;
 import java.awt.Canvas;
 import java.awt.Graphics;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.awt.image.BufferStrategy;
-import java.util.Random;
-
 import GameEngine.GameDesign.GUITextBox;
 import GameEngine.GameDesign.Level;
 import GameEngine.GameDesign.OnGUI;
 import GameEngine.SuperEntities.Sprites;
 import GameEngine.Util.KeyboardManager;
 import GameEngine.Util.MouseManager;
-import Serialization.VPArray;
 import Serialization.VPDatabase;
-import Serialization.VPField;
 import Serialization.VPObject;
 
 public class Game extends Canvas implements Runnable

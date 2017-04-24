@@ -10,12 +10,11 @@ import GameEngine.GameDesign.GUITextBox;
 import GameEngine.GameDesign.Level;
 import GameEngine.SuperEntities.NetPlayer;
 import GameEngine.SuperEntities.Player;
+import GameEngine.SuperEntities.Projectile;
 import GameEngine.Util.Vector2D;
-import Serialization.Type;
 import Serialization.VPDatabase;
 import Serialization.VPField;
 import Serialization.VPObject;
-import Serialization.VPString;
 
 public class Client {
 	
@@ -159,7 +158,14 @@ public class Client {
 	{
 		if (Level.level == 0) return;
 			
-		if (database.getName().equals("Server Clients"))
+		updatePlayers(database);
+		updateProjectiles(database);
+		
+	}
+	
+	public void updatePlayers(VPDatabase database)
+	{
+		if (database.getName().equals("PlayerPos"))
 		{
 			
 			for (VPObject object : database.objects)
@@ -225,6 +231,25 @@ public class Client {
 						ObjectHandler.addNetPlayer(new NetPlayer(object.getName(), new Vector2D(x,y)));
 					}
 				}
+			}
+		}
+	}
+	
+	public void updateProjectiles(VPDatabase database)
+	{
+		if (database.getName().equals("ProjectilePos"))
+		{
+			for (VPObject object : database.objects)
+			{
+				int x = 0, y = 0;
+				String username = object.getName();
+				
+				for (VPField field : object.fields)
+				{
+					if(field.getName().equals("x")) x = field.getInt();
+					if(field.getName().equals("y")) y = field.getInt();
+				}
+				ObjectHandler.addBullet(new Projectile(x, y, username, 1));
 			}
 		}
 	}

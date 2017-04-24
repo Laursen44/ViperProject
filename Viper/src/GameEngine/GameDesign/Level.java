@@ -4,7 +4,6 @@ import java.awt.Rectangle;
 import GameEngine.Framework.Game;
 import GameEngine.Framework.ObjectHandler;
 import GameEngine.SuperEntities.Block;
-import GameEngine.SuperEntities.Player;
 import GameEngine.SuperEntities.Sprites;
 import GameEngine.SuperEntities.Texture;
 import GameEngine.Util.Vector2D;

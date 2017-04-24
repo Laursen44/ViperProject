@@ -6,8 +6,13 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import GameEngine.Framework.Game;
 import GameEngine.Framework.ObjectHandler;
+import GameEngine.GameDesign.GUITextBox;
 import GameEngine.Util.Vector2D;
+import Serialization.VPDatabase;
+import Serialization.VPField;
+import Serialization.VPObject;
 
 public class Projectile extends GameObject {
 
@@ -19,6 +24,8 @@ public class Projectile extends GameObject {
 	protected int pXX, pYY;
 	protected Vector2D posVec;
 	protected Vector2D shootVec;
+	public int x, y;
+	public String username;
 	protected Rectangle collisionRect;
 	protected BufferedImage sprite;
 	protected boolean updateBounds = false;
@@ -39,9 +46,34 @@ public class Projectile extends GameObject {
 		updateBounds = true;
 	}
 	
+	public Projectile(int x, int y, String username, int type)
+	{
+		this.x = x;
+		this.y = y;
+		this.username = username;
+		
+		if(type == 1) this.sprite = Sprites.bullet1Red;
+		if(type == 2) this.sprite = Sprites.bullet2White;
+		if(type == 3) this.sprite = Sprites.bullet3Orange;
+	}
+	
 	public void move()
 	{
 		posVec = posVec.add(shootVec);
+		
+		VPDatabase database = new VPDatabase("Projectiles");
+		VPObject usernameObject = new VPObject(GUITextBox.username);
+		database.addObject(usernameObject);
+		for (int i = 0; i < ObjectHandler.bullet.size(); i++)
+		{
+			VPObject object = new VPObject(GUITextBox.username);
+			VPField xCord = VPField.Integer("x", (int)posVec.getX());
+			VPField yCord = VPField.Integer("y", (int)posVec.getX());
+			object.addField(xCord);
+			object.addField(yCord);
+			database.addObject(object);
+		}
+		Game.client.send(database);
 	}
 	
 	public Rectangle getCollisiosRect() {
@@ -68,7 +100,8 @@ public class Projectile extends GameObject {
 				
 				if (bullets.get(i).collisionRect.getBounds().intersects(block.getBounds()))
 				{
-					ObjectHandler.removeBullet(bullets.get(i));
+					Projectile p = bullets.get(i);
+					ObjectHandler.removeBullet(p);
 				}
 			}
 		}
@@ -86,7 +119,7 @@ public class Projectile extends GameObject {
 
 	public void render(Graphics g) 
 	{
-		g.drawImage(sprite, (int)posVec.getX(), (int)posVec.getY(), null);
+		g.drawImage(sprite, (int)posVec.getX(), (int)posVec.getX(), null);
 	}
 
 }
