@@ -4,8 +4,8 @@ import java.awt.Rectangle;
 import GameEngine.Framework.Game;
 import GameEngine.Framework.ObjectHandler;
 import GameEngine.SuperEntities.Block;
-import GameEngine.SuperEntities.Sprites;
 import GameEngine.SuperEntities.Texture;
+import GameEngine.Util.Sprites;
 import GameEngine.Util.Vector2D;
 
 public class Level 

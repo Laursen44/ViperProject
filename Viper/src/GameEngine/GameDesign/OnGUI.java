@@ -3,9 +3,9 @@ package GameEngine.GameDesign;
 import java.awt.Graphics;
 
 import GameEngine.Framework.Game;
-import GameEngine.SuperEntities.Sprites;
 import GameEngine.Util.KeyboardManager;
 import GameEngine.Util.MouseManager;
+import GameEngine.Util.Sprites;
 import Serialization.VPDatabase;
 import Serialization.VPObject;
 

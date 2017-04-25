@@ -3,6 +3,7 @@ package GameEngine.SuperEntities;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import GameEngine.Util.Sprites;
 import GameEngine.Util.Vector2D;
 
 public class NetPlayer extends GameObject

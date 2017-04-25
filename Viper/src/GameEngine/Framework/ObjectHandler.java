@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import GameEngine.SuperEntities.GameObject;
 import GameEngine.SuperEntities.NetPlayer;
+import GameEngine.SuperEntities.NetProjectile;
 import GameEngine.SuperEntities.Projectile;
  
 public class ObjectHandler 
@@ -11,6 +12,7 @@ public class ObjectHandler
 	public static ArrayList<GameObject> object = new ArrayList<GameObject>();
 	public static ArrayList<Projectile> bullet = new ArrayList<Projectile>();
 	public static ArrayList<NetPlayer> netPlayers = new ArrayList<NetPlayer>();
+	public static ArrayList<NetProjectile> netBullets = new ArrayList<NetProjectile>();
 	
 	public ObjectHandler()
 	{
@@ -51,6 +53,12 @@ public class ObjectHandler
 			NetPlayer p = netPlayers.get(i);
 			p.render(g);
 		}
+		
+		for(int i = 0; i < netBullets.size(); i++)
+		{
+			NetProjectile p = netBullets.get(i);
+			p.render(g);
+		}
 	}
 	
 	public static void addObject(GameObject o)
@@ -81,6 +89,16 @@ public class ObjectHandler
 	public static void removeNetPlayer(NetPlayer p)
 	{
 		netPlayers.remove(p);
+	}
+	
+	public static void addNetBullet(NetProjectile p)
+	{
+		netBullets.add(p);
+	}
+	
+	public static void removeNetBullet(NetProjectile p)
+	{
+		netBullets.remove(p);
 	}
 	
 	public static ArrayList<GameObject> getObjectList() {

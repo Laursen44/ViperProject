@@ -1,9 +1,7 @@
-package GameEngine.SuperEntities;
+package GameEngine.Util;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
-import GameEngine.Util.BufferedImageLoader;
 
 public class Sprites 
 {

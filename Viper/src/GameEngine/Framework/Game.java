@@ -5,9 +5,9 @@ import java.awt.image.BufferStrategy;
 import GameEngine.GameDesign.GUITextBox;
 import GameEngine.GameDesign.Level;
 import GameEngine.GameDesign.OnGUI;
-import GameEngine.SuperEntities.Sprites;
 import GameEngine.Util.KeyboardManager;
 import GameEngine.Util.MouseManager;
+import GameEngine.Util.Sprites;
 import Serialization.VPDatabase;
 import Serialization.VPObject;
 

@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import GameEngine.Framework.Game;
 import GameEngine.Framework.ObjectHandler;
 import GameEngine.GameDesign.GUITextBox;
+import GameEngine.Util.Sprites;
 import GameEngine.Util.Vector2D;
 import Serialization.VPDatabase;
 import Serialization.VPField;
@@ -26,15 +27,17 @@ public class Projectile extends GameObject {
 	protected Vector2D shootVec;
 	public int x, y;
 	public String username;
+	public int index;
 	protected Rectangle collisionRect;
 	protected BufferedImage sprite;
 	protected boolean updateBounds = false;
 	
-	public Projectile(Vector2D vec, double dir, int damage, int speed, BufferedImage sprite) 
+	public Projectile(Vector2D vec, double dir, int damage, int speed, BufferedImage sprite, int type, int index) 
 	{
 		this.damage = damage;
 		this.speed = speed;
 		this.sprite = sprite;
+		this.index = index;
 		posVec = vec;
 		angle = dir;
 		shootVec = new Vector2D(Math.cos(angle), Math.sin(angle));
@@ -45,32 +48,23 @@ public class Projectile extends GameObject {
 		collisionRect.setBounds(collisionRect);
 		updateBounds = true;
 	}
-	
-	public Projectile(int x, int y, String username, int type)
-	{
-		this.x = x;
-		this.y = y;
-		this.username = username;
-		
-		if(type == 1) this.sprite = Sprites.bullet1Red;
-		if(type == 2) this.sprite = Sprites.bullet2White;
-		if(type == 3) this.sprite = Sprites.bullet3Orange;
-	}
-	
+
 	public void move()
 	{
 		posVec = posVec.add(shootVec);
 		
-		VPDatabase database = new VPDatabase("Projectiles");
-		VPObject usernameObject = new VPObject(GUITextBox.username);
-		database.addObject(usernameObject);
+		VPDatabase database = new VPDatabase("Projectiles");	
 		for (int i = 0; i < ObjectHandler.bullet.size(); i++)
 		{
-			VPObject object = new VPObject(GUITextBox.username);
+			VPObject object = new VPObject(GUITextBox.username + "," + index);
+			VPField xdir = VPField.Float("xd", shootVec.getX());
+			VPField ydir = VPField.Float("yd", shootVec.getY());
 			VPField xCord = VPField.Integer("x", (int)posVec.getX());
-			VPField yCord = VPField.Integer("y", (int)posVec.getX());
+			VPField yCord = VPField.Integer("y", (int)posVec.getY());
 			object.addField(xCord);
 			object.addField(yCord);
+			object.addField(xdir);
+			object.addField(ydir);
 			database.addObject(object);
 		}
 		Game.client.send(database);

@@ -9,6 +9,7 @@ import java.net.UnknownHostException;
 import GameEngine.GameDesign.GUITextBox;
 import GameEngine.GameDesign.Level;
 import GameEngine.SuperEntities.NetPlayer;
+import GameEngine.SuperEntities.NetProjectile;
 import GameEngine.SuperEntities.Player;
 import GameEngine.SuperEntities.Projectile;
 import GameEngine.Util.Vector2D;
@@ -172,7 +173,7 @@ public class Client {
 			{
 				if (object.getName().equals(GUITextBox.username))
 				{
-					//make or update player!
+					//make player!
 					if(!playerActive)
 					{
 						int x = 0, y = 0;
@@ -183,19 +184,7 @@ public class Client {
 						}
 						ObjectHandler.addObject(new Player(new Vector2D(x, y)));
 						playerActive = true;
-					}else 
-					{
-						int x = 0, y = 0;
-						for (VPField field : object.fields)
-						{
-							if(field.getName().equals("x")) x = field.getInt();
-							if(field.getName().equals("y")) y = field.getInt();
-						}
-						System.out.println("updated player");
-						Player.vec = new Vector2D(x,y);
-						//Player.vec = Player.vec.add(new Vector2D(0,y));
 					}
-					
 				}
 				
 				if (!object.getName().equals(GUITextBox.username))
@@ -239,17 +228,50 @@ public class Client {
 	{
 		if (database.getName().equals("ProjectilePos"))
 		{
+			
 			for (VPObject object : database.objects)
 			{
-				int x = 0, y = 0;
-				String username = object.getName();
+				String usernameIndex = object.getName();
+				String[] parts = usernameIndex.split(",");
+				String username = parts[0];
 				
-				for (VPField field : object.fields)
+				// if the usernames do not match, then they are not your bullets and we can proceed!
+				if (!username.equals(GUITextBox.username))
 				{
-					if(field.getName().equals("x")) x = field.getInt();
-					if(field.getName().equals("y")) y = field.getInt();
-				}
-				ObjectHandler.addBullet(new Projectile(x, y, username, 1));
+					int newb = 0;
+					
+					// check if the bullet is new
+					for (VPField field : object.fields)
+					{
+						if (field.getName().equals("new")) 
+							newb = field.getInt();
+					}
+					System.out.println(newb);
+					if(newb == 1)
+					{
+						int x = 0, y = 0;
+						for (VPField field : object.fields)
+						{
+							if(field.getName().equals("x")) x = field.getInt();
+							if(field.getName().equals("y")) y = field.getInt();
+						}
+						ObjectHandler.netBullets.add(new NetProjectile(new Vector2D(x, y), usernameIndex, 1));	
+						
+						System.out.println("added netBullet!");
+					}else if (newb == 0)// in the case that its not new, then update the projectile with the update method.
+					{
+						for (int k = 0; k < ObjectHandler.netBullets.size(); k++)
+						{
+							float xdir = 0, ydir = 0;
+							for (VPField field : object.fields)
+							{
+								if(field.getName().equals("xd")) xdir = field.getFloat();
+								if(field.getName().equals("yd")) ydir = field.getFloat();
+							}
+							ObjectHandler.netBullets.get(k).update(xdir, ydir);
+						}
+					}
+				}	
 			}
 		}
 	}
