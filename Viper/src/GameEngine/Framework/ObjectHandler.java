@@ -32,6 +32,12 @@ public class ObjectHandler
 			Projectile p = bullet.get(i);
 			p.update();
 		}
+		
+		for(int i = 0; i < netBullets.size(); i++)
+		{
+			NetProjectile p = netBullets.get(i);
+			p.update();
+		}
 	}
 	
 	public void render(Graphics g)
@@ -108,4 +114,9 @@ public class ObjectHandler
 	public static ArrayList<Projectile> getBulletList() {
 		return bullet;
 	}
+	
+	public static ArrayList<NetProjectile> getNetBulletList() {
+		return netBullets;
+	}
 }
+

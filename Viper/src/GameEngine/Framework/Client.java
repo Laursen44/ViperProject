@@ -148,7 +148,7 @@ public class Client {
 		byte[] data = pack.getData();
 		if (new String(data,0,4).equals("VPDB"))
 		{
-			System.out.println("recieved VPDB from server!");
+			//System.out.println("recieved VPDB from server!");
 			VPDatabase database = VPDatabase.Deserialize(data);
 			//dump(database);
 			update(database);
@@ -226,52 +226,26 @@ public class Client {
 	
 	public void updateProjectiles(VPDatabase database)
 	{
-		if (database.getName().equals("ProjectilePos"))
+		if (database.getName().equals("ProjectileBlue"))
 		{
-			
 			for (VPObject object : database.objects)
 			{
-				String usernameIndex = object.getName();
-				String[] parts = usernameIndex.split(",");
-				String username = parts[0];
+				String username = object.getName();
+				float x= 0, y = 0, a = 0;
+				int t = 0;
 				
-				// if the usernames do not match, then they are not your bullets and we can proceed!
-				if (!username.equals(GUITextBox.username))
+				for (VPField field : object.fields)
 				{
-					int newb = 0;
-					
-					// check if the bullet is new
-					for (VPField field : object.fields)
-					{
-						if (field.getName().equals("new")) 
-							newb = field.getInt();
-					}
-					System.out.println(newb);
-					if(newb == 1)
-					{
-						int x = 0, y = 0;
-						for (VPField field : object.fields)
-						{
-							if(field.getName().equals("x")) x = field.getInt();
-							if(field.getName().equals("y")) y = field.getInt();
-						}
-						ObjectHandler.netBullets.add(new NetProjectile(new Vector2D(x, y), usernameIndex, 1));	
-						
-						System.out.println("added netBullet!");
-					}else if (newb == 0)// in the case that its not new, then update the projectile with the update method.
-					{
-						for (int k = 0; k < ObjectHandler.netBullets.size(); k++)
-						{
-							float xdir = 0, ydir = 0;
-							for (VPField field : object.fields)
-							{
-								if(field.getName().equals("xd")) xdir = field.getFloat();
-								if(field.getName().equals("yd")) ydir = field.getFloat();
-							}
-							ObjectHandler.netBullets.get(k).update(xdir, ydir);
-						}
-					}
-				}	
+					if (field.getName().equals("x")) x = field.getFloat();
+					if (field.getName().equals("y")) y = field.getFloat();
+					if (field.getName().equals("a")) a = field.getFloat();
+					if (field.getName().equals("t")) t = field.getInt();
+				}
+				
+				if(!username.equals(GUITextBox.username))
+				{
+					ObjectHandler.netBullets.add(new NetProjectile(new Vector2D(x,y), a, t));
+				}
 			}
 		}
 	}

@@ -30,8 +30,6 @@ public class Player extends GameObject
 	private boolean updateBounds = false, Shoot = false;
 	int pXX, pYY, hDir, vDir;
 	ObjectHandler handler;
-	public static int index = 0;
-	public static int indexcounter = 1;
 	
 	public Player(Vector2D vec)
 	{
@@ -52,33 +50,53 @@ public class Player extends GameObject
 	
 	public void shoot(Vector2D initVec, float aimX, float aimY) 
 	{
+		System.out.println(initVec.getX() + " " + initVec.getY());
 		float opposite = aimY - initVec.getY();
 		float adjacent = aimX - initVec.getX();
 		float angle = (float)Math.atan2(opposite, adjacent);
-		index += indexcounter;
+		initVec.add(8);
+		int type = 1;
 		
 		if (OnGUI.abillityBarActive == 1)
 		{
-			
+			type = 1;
 			cooldown = 10;
-			Projectile p = new Projectile(initVec.add(8), angle, 10, 8, Sprites.bullet1Red, 1, index);
+			Projectile p = new Projectile(initVec, angle, 10, 8, Sprites.bullet1Red, type);
 			ObjectHandler.addBullet(p);
 		}
 		
 		if (OnGUI.abillityBarActive == 2)
 		{
+			type = 2;
 			cooldown = 30;
-			Projectile p = new Projectile(initVec.add(8), angle, 20, 16, Sprites.bullet2White, 2, index);
+			Projectile p = new Projectile(initVec, angle, 20, 14, Sprites.bullet2White, type);
 			ObjectHandler.addBullet(p);
 		}
 		
 		if (OnGUI.abillityBarActive == 3)
 		{
+			type = 3;
 			cooldown = 60;
-			Projectile p = new Projectile(initVec.add(8), angle, 50, 12, Sprites.bullet3Orange, 3, index);
+			Projectile p = new Projectile(initVec, angle, 50, 12, Sprites.bullet3Orange, type);
 			ObjectHandler.addBullet(p);
 		}
 		
+		VPDatabase database = new VPDatabase("Projectile");	
+
+		VPObject object = new VPObject(GUITextBox.username);
+		
+		VPField x = VPField.Float("x", initVec.getX());
+		VPField y = VPField.Float("y", initVec.getY());
+		VPField a = VPField.Float("a", angle);
+		VPField t = VPField.Integer("t", type);
+		
+		object.addField(x);
+		object.addField(y);
+		object.addField(a);
+		object.addField(t);
+		database.addObject(object);
+
+		Game.client.send(database);
 	}
 	
 	public void checkIfShot()
@@ -97,6 +115,7 @@ public class Player extends GameObject
 		if (KeyboardManager.left && !checkCollisionLeft())	vec = vec.add(new Vector2D(-1*5,0));
 		if (KeyboardManager.right && !checkCollisionRight())vec = vec.add(new Vector2D(1*5,0));
 		
+		System.out.println(vec.getX() + " " + vec.getY());
 		VPDatabase database = new VPDatabase("Update");
 		VPObject object = new VPObject(GUITextBox.username);
 		
