@@ -16,6 +16,7 @@ public class NetPlayer extends GameObject
 	{
 		this.username = username;
 		this.vec = vec;
+		System.out.println("created netPlayer");
 	}
 
 	public void update(int x, int y) 

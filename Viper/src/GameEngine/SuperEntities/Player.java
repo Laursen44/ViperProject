@@ -3,11 +3,13 @@ package GameEngine.SuperEntities;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import GameEngine.Framework.Game;
 import GameEngine.Framework.ObjectHandler;
 import GameEngine.GameDesign.GUITextBox;
+import GameEngine.GameDesign.Level;
 import GameEngine.GameDesign.OnGUI;
 import GameEngine.Util.KeyboardManager;
 import GameEngine.Util.MouseManager;
@@ -25,7 +27,7 @@ public class Player extends GameObject
 	private int health = 100;
 	private String name = GUITextBox.username;
 	int cooldownTimer = 30, cooldown;
-	public static Rectangle collisionRectTop, collisionRectBot, collisionRectLeft, collisionRectRight;
+	public static Rectangle collisionRectTop, collisionRectBot, collisionRectLeft, collisionRectRight, hitboxRect;
 	public int pW = 32, pH = 32, x, y;
 	private boolean updateBounds = false, Shoot = false;
 	int pXX, pYY, hDir, vDir;
@@ -44,17 +46,18 @@ public class Player extends GameObject
 		collisionRectLeft.setBounds(collisionRectLeft);
 		collisionRectRight = new Rectangle(pX + 30, pY + 6 , pW - 30, pH - 12);
 		collisionRectRight.setBounds(collisionRectRight);
+		hitboxRect = new Rectangle(pX, pY, pW , pH);
+		hitboxRect.setBounds(hitboxRect);
 		updateBounds = true;
 		Shoot = true;
 	}
 	
 	public void shoot(Vector2D initVec, float aimX, float aimY) 
 	{
-		System.out.println(initVec.getX() + " " + initVec.getY());
 		float opposite = aimY - initVec.getY();
 		float adjacent = aimX - initVec.getX();
 		float angle = (float)Math.atan2(opposite, adjacent);
-		initVec.add(8);
+		//initVec.add(8);
 		int type = 1;
 		
 		if (OnGUI.abillityBarActive == 1)
@@ -108,6 +111,28 @@ public class Player extends GameObject
 		}
 	}
 	
+	public void resetIfDead()
+	{
+		
+		if(OnGUI.healthBarWidth <= 0)
+		{
+			VPDatabase database = new VPDatabase("Dead");
+			VPObject object = new VPObject(GUITextBox.username);
+			database.addObject(object);
+			Game.client.send(database);
+			
+			ObjectHandler.bullet.clear();
+			ObjectHandler.object.clear();
+			ObjectHandler.netPlayers.clear();
+			ObjectHandler.netBullets.clear();
+			
+			Level.setLevel(0);
+			Level.changeLevel = true;
+			OnGUI.healthBarWidth = 96;
+		}
+		
+	}
+	
 	public void move()
 	{
 		if (KeyboardManager.up && !checkCollisionTop()) 	vec = vec.add(new Vector2D(0,-1*5));
@@ -115,7 +140,6 @@ public class Player extends GameObject
 		if (KeyboardManager.left && !checkCollisionLeft())	vec = vec.add(new Vector2D(-1*5,0));
 		if (KeyboardManager.right && !checkCollisionRight())vec = vec.add(new Vector2D(1*5,0));
 		
-		System.out.println(vec.getX() + " " + vec.getY());
 		VPDatabase database = new VPDatabase("Update");
 		VPObject object = new VPObject(GUITextBox.username);
 		
@@ -129,10 +153,33 @@ public class Player extends GameObject
 		Game.client.send(database);
 	}
 	
+	public void removeNetbOnCollide()
+	{
+		ArrayList<NetProjectile> bullets = ObjectHandler.getNetBulletList();
+		
+		for (int i = 0; i < bullets.size(); i++)
+		{
+
+			if (hitboxRect.getBounds().intersects(bullets.get(i).collisionRect.getBounds()))
+			{
+				System.out.println("took damage and collision");
+				boolean tookdamage = false;
+				
+				if(!tookdamage)
+				{
+					OnGUI.healthBarWidth -= bullets.get(i).damage;
+					tookdamage = true;
+				}
+				
+				ObjectHandler.removeNetBullet(bullets.get(i));
+				
+			}
+		}
+	}
 	
 	public boolean checkCollisionTop()
 	{
-		LinkedList<Rectangle> blocks = Block.getLinkedList();
+		ArrayList<Rectangle> blocks = Block.getArrayList();
 		for (Rectangle block : blocks)
 			if (collisionRectTop.getBounds().intersects(block.getBounds()))
 			{
@@ -144,7 +191,7 @@ public class Player extends GameObject
 	
 	public boolean checkCollisionBot()
 	{
-		LinkedList<Rectangle> blocks = Block.getLinkedList();
+		ArrayList<Rectangle> blocks = Block.getArrayList();
 		for (Rectangle block : blocks)
 			if (collisionRectBot.getBounds().intersects(block.getBounds()))
 			{
@@ -156,7 +203,7 @@ public class Player extends GameObject
 	
 	public boolean checkCollisionLeft()
 	{
-		LinkedList<Rectangle> blocks = Block.getLinkedList();
+		ArrayList<Rectangle> blocks = Block.getArrayList();
 		for (Rectangle block : blocks)
 			if (collisionRectLeft.getBounds().intersects(block.getBounds()))
 			{
@@ -168,7 +215,7 @@ public class Player extends GameObject
 	
 	public boolean checkCollisionRight()
 	{
-		LinkedList<Rectangle> blocks = Block.getLinkedList();
+		ArrayList<Rectangle> blocks = Block.getArrayList();
 		for (Rectangle block : blocks)
 			if (collisionRectRight.getBounds().intersects(block.getBounds()))
 			{
@@ -214,6 +261,15 @@ public class Player extends GameObject
 		return collisionRectRight;
 	}
 	
+	public Rectangle updateHitBoxRect()
+	{
+		pXX = (int)vec.getX();
+		pYY = (int)vec.getY();
+		hitboxRect = new Rectangle(pXX, pYY, pW, pH);
+		hitboxRect.setBounds(hitboxRect);
+		return hitboxRect;
+	}
+	
 	public void update() 
 	{
 		move();
@@ -223,6 +279,8 @@ public class Player extends GameObject
 			updateBoundsBot();
 			updateBoundsLeft();
 			updateBoundsRight();
+			updateHitBoxRect();
+			removeNetbOnCollide();
 		}
 		
 		 if (Shoot)
@@ -230,6 +288,8 @@ public class Player extends GameObject
 			 checkIfShot();
 		 }
 		 cooldownTimer++;
+		 
+		 resetIfDead();
 	}
 
 	public void render(Graphics g)
@@ -237,16 +297,5 @@ public class Player extends GameObject
 		g.setColor(Color.WHITE);
 		g.drawString(this.name, (int)vec.getX() - 8, (int)vec.getY() - 5);
 		g.drawImage(Sprites.ship1, (int)vec.getX(), (int)vec.getY(), null);
-	}
-
-	public int getHealth() 
-	{
-		return health;
-	}
-
-	public void setHealth(int health) 
-	{
-		this.health = health;
-	}
-	
+	}	
 }

@@ -148,7 +148,6 @@ public class Client {
 		byte[] data = pack.getData();
 		if (new String(data,0,4).equals("VPDB"))
 		{
-			System.out.println("recieved VPDB from server!");
 			VPDatabase database = VPDatabase.Deserialize(data);
 			//dump(database);
 			update(database);
@@ -204,7 +203,6 @@ public class Client {
 								if(field.getName().equals("y")) y = field.getInt();
 							}
 							newPlayer = false;
-							System.out.println("updated Net Player");
 							p.update(x, y);
 						}
 					}

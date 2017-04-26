@@ -17,7 +17,8 @@ public class OnGUI
 	public static boolean loginScreen = false;
 	public static boolean usernameActive = false;
 	public static boolean connectionNotSent = true;
-	public int healthX = 50, healthY = 50, healthBarWidth = 96;
+	public int healthX = 50, healthY = 50; 
+	public static int healthBarWidth = 96;
 	public int abillityX = Game.WIDTH/2 - ((50*2+16*2)/2), abillityY = Game.HEIGHT - 100, abillityOffset = 50;
 	public static int usernameWidth = 300, usernameHeight = 30;
 	public static int loginX = Game.WIDTH/2 - 48, loginY = 200, createX = loginX, createY = loginY + 75, 

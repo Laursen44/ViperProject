@@ -67,12 +67,12 @@ public class Projectile extends GameObject {
 	
 	public void removeIfCollideBlock()
 	{
-		LinkedList<Rectangle> blocks = Block.getLinkedList();
+		ArrayList<Rectangle> blocks = Block.getArrayList();
 		ArrayList<Projectile> bullets = ObjectHandler.getBulletList();
 		
 		for (Rectangle block : blocks)
 		{
-			for (int i = 0; i < bullets.size(); i++){
+			for (int i = bullets.size() -1; i >= 0 ; i--){
 				
 				if (bullets.get(i).collisionRect.getBounds().intersects(block.getBounds()))
 				{
@@ -95,7 +95,7 @@ public class Projectile extends GameObject {
 
 	public void render(Graphics g) 
 	{
-		g.drawImage(sprite, (int)posVec.getX(), (int)posVec.getX(), null);
+		g.drawImage(sprite, (int)posVec.getX(), (int)posVec.getY(), null);
 	}
 
 }

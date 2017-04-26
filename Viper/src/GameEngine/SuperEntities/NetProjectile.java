@@ -80,17 +80,17 @@ public class NetProjectile extends GameObject {
 	
 	public void removeIfCollideBlock()
 	{
-		LinkedList<Rectangle> blocks = Block.getLinkedList();
+		ArrayList<Rectangle> blocks = Block.getArrayList();
 		ArrayList<NetProjectile> bullets = ObjectHandler.getNetBulletList();
 		
 		for (Rectangle block : blocks)
 		{
-			for (NetProjectile bullet : ObjectHandler.netBullets){
+			for (int i = bullets.size() -1; i >= 0 ; i--){
 				
-				if (bullet.collisionRect.getBounds().intersects(block.getBounds()))
+				if (ObjectHandler.netBullets.get(i).collisionRect.getBounds().intersects(block.getBounds()))
 				{
-					NetProjectile p = bullet;
-					ObjectHandler.removeNetBullet(p);
+					
+					ObjectHandler.removeNetBullet(ObjectHandler.netBullets.get(i));
 				}
 			}
 		}
@@ -108,7 +108,7 @@ public class NetProjectile extends GameObject {
 
 	public void render(Graphics g) 
 	{
-		g.drawImage(sprite, (int)posVec.getX(), (int)posVec.getX(), null);
+		g.drawImage(sprite, (int)posVec.getX(), (int)posVec.getY(), null);
 	}
 
 }

@@ -3,6 +3,7 @@ package GameEngine.SuperEntities;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Block extends GameObject 
@@ -10,7 +11,7 @@ public class Block extends GameObject
 	private static final long serialVersionUID = 1L;
 	public Rectangle rect;
 	protected BufferedImage sprite;
-	public static LinkedList<Rectangle> blockBounds = new LinkedList<Rectangle>();
+	public static ArrayList<Rectangle> blockBounds = new ArrayList<Rectangle>();
 
 	public Block(Rectangle rect, BufferedImage sprite) 
 	{
@@ -29,7 +30,7 @@ public class Block extends GameObject
 		g.drawImage(sprite, (int)rect.getX(), (int)rect.getY(), null);
 	}
 
-	public static LinkedList<Rectangle> getLinkedList() {
+	public static ArrayList<Rectangle> getArrayList() {
 		return blockBounds;
 	}
 	
